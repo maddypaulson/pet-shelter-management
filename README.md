@@ -22,6 +22,7 @@ Our application provides the following functionalities:
 - **Other Administration**: Managing social media posts and event/fundraiser details.
 
 Platform: Oracle Database Management System.
+
 Tech Stack:
 - Programming Language: PHP
 - Database Management System: Oracle Database
