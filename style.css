@@ -1,0 +1,94 @@
+/* style.css */
+
+body {
+    background-color: #f7f7f7;
+    font-family: 'Judson', serif;
+    font-size: 16px;  
+    margin: 20px;
+    padding: 20px;
+}
+
+h2 {
+    color: #4C243B;
+    font-family: 'Judson', serif;
+    font-size: 30px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-family: 'Archivo Black', sans-serif;
+    color: #4C243B;
+    font-size: 46px; 
+    text-align: center;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.square-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card {
+    position: relative;
+    width: 400px;
+    height: 750px;
+    background-color: #AC7B84;
+    margin: 50px;
+    border-radius: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding-top: 20px; /* Add padding to the top */
+}
+
+.circle-icon-container {
+    position: relative;
+    text-align: center;
+}
+
+.circle-icon {
+    width: 150px;
+    height: 150px;
+    background-color: #4c243bc8;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
+.icon1 {
+    background-image: url('animal_intake.svg');
+}
+
+.icon2 {
+    background-image: url('appointments.svg');
+}
+
+.icon3 {
+    background-image: url('search.svg');
+}
+
+.add-animal-btn {
+    display: block;
+    margin: 0 auto; /* Center the button horizontally */
+    padding: 10px;
+    background-color: #4c243bc8;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Judson', serif;
+    font-size: 16px;
+    font-weight: bold; 
+    margin-bottom: 40px; /* Add margin to the bottom */
+}
+
+.add-animal-btn + .add-animal-btn {
+    margin-top: 40px;
+}
+
+a {
+    text-decoration: none;
+}
