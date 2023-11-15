@@ -1,26 +1,27 @@
 # GUI / query requirements
 
 ## 1. INSERT
-- [ ] The user should be able to specify what values to insert. 
-- [ ] The insert operation should affect more than one table (i.e., an insert should occur on a table with a foreign key). 
-- [ ] The chosen query and table(s) should make sense given the context of the application. 
-- [ ] The INSERT operation should be able to handle the case where the foreign key value in the tuple does not exist in the table that is being referred to. 
-- [ ] The tables that the insert operation will run on can be pre-chosen by the group. 
+- [x] The user should be able to specify what values to insert. 
+- [x] The insert operation should affect more than one table (i.e., an insert should occur on a table with a foreign key). 
+- [x] The chosen query and table(s) should make sense given the context of the application. 
+- [x] The INSERT operation should be able to handle the case where the foreign key value in the tuple does not exist in the table that is being referred to. 
+- [x] The tables that the insert operation will run on can be pre-chosen by the group. 
 
 ## 2. DELETE
-- [ ] Implement a cascade-on-delete situation (or an alternative that was agreed to by the TA if the DB system doesn’t provide this). The user should be able to choose what values to delete. 
-- [ ] The tables that the delete operation will run on can be chosen by the group. 
-- [ ] The chosen query and table(s) should make sense given the context of the application. 
+- [x] Implement a cascade-on-delete situation (or an alternative that was agreed to by the TA if the DB system doesn’t provide this). The user should be able to choose what values to delete. 
+- [x] The tables that the delete operation will run on can be chosen by the group. 
+- [x] The chosen query and table(s) should make sense given the context of the application. 
+
 ## 3. UPDATE
-- [ ] The user should be able to update any number of non-primary key attributes in a relation. 
-- [ ] The relation used for the update operation must have at least two non-primary key attributes. At least one non-primary key attribute must have either a UNIQUE constraint or be a foreign key that references another table. 
-- [ ] The application should present the tuples that are available so that the user can select which tuple they want to update. 
-- [ ] The chosen query and table(s) should make sense given the context of the application. 
+- [x] The user should be able to update any number of non-primary key attributes in a relation. 
+- [x] The relation used for the update operation must have at least two non-primary key attributes. At least one non-primary key attribute must have either a UNIQUE constraint or be a foreign key that references another table. 
+- [x] The application should present the tuples that are available so that the user can select which tuple they want to update. 
+- [x] The chosen query and table(s) should make sense given the context of the application. 
 
 ## 4. Selection
-- [ ] The user is able to specify the filtering conditions for a given table. That is, the user is able to determine what shows up in the WHERE clause. 
-- [ ] The user should be allowed to search for tuples using any number of AND/OR clauses. 
-- [ ] The group can choose which table to run this query on. The query and chosen table(s) should make sense given the context of the application. 
+- [x] The user is able to specify the filtering conditions for a given table. That is, the user is able to determine what shows up in the WHERE clause. 
+- [x] The user should be allowed to search for tuples using any number of AND/OR clauses. 
+- [x] The group can choose which table to run this query on. The query and chosen table(s) should make sense given the context of the application. 
 
 ## 5. Projection
 - [ ] The user is able to choose any number of attributes to view from any relation in the database. Non-selected attributes must not appear in the result. 
