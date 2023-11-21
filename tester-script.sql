@@ -5,22 +5,22 @@ DROP TABLE Worker;
 
 DROP TABLE VetAppointment;
 
-ALTER TABLE VetAppointment DROP CONSTRAINT va_fk;
+--ALTER TABLE VetAppointment DROP CONSTRAINT va_fk;
 DROP TABLE Animal;
 
-ALTER TABLE Adopter DROP CONSTRAINT a_pk;
-ALTER TABLE Animal DROP CONSTRAINT a_fk_po;
-DROP TABLE Customer;
-
-ALTER TABLE Animal DROP CONSTRAINT a_fk_aid;
+--ALTER TABLE Adopter DROP CONSTRAINT a_pk;
+--ALTER TABLE Animal DROP CONSTRAINT a_fk_po;
 DROP TABLE Adopter;
 
-ALTER TABLE Animal DROP CONSTRAINT a_fk_fc;
-ALTER TABLE Worker DROP CONSTRAINT w_pk;
-ALTER TABLE Volunteer DROP CONSTRAINT v_pk;
+--ALTER TABLE Animal DROP CONSTRAINT a_fk_aid;
+DROP TABLE Customer;
+
+--ALTER TABLE Animal DROP CONSTRAINT a_fk_fc;
+--ALTER TABLE Worker DROP CONSTRAINT w_pk;
+--ALTER TABLE Volunteer DROP CONSTRAINT v_pk;
 DROP TABLE AnimalCaretaker;
 
-ALTER TABLE AnimalCaretaker DROP CONSTRAINT ac_fk_fe;
+--ALTER TABLE AnimalCaretaker DROP CONSTRAINT ac_fk_fe;
 DROP TABLE FundraiserEvent;
 
 
