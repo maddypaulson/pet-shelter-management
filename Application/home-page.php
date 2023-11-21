@@ -28,14 +28,6 @@
                 <a href="intake_and_adoption.php">
                     <button class="add-animal-btn">Update animal information</button>
                 </a>
-
-                <a href="intake_and_adoption.php">
-                    <button class="add-animal-btn">Add an adoption record</button>
-                </a>
-
-                <a href="intake_and_adoption.php">
-                    <button class="add-animal-btn">Remove an adoption record</button>
-                </a>
             </div>
             <div class="card">
                 <div class="circle-icon-container">
@@ -53,10 +45,6 @@
                 <a href="appointments.php">
                     <button class="add-animal-btn">Update an existing appointment</button>
                 </a>
-
-                <a href="appointments.php">
-                    <button class="add-animal-btn">Create a new vet appointment</button>
-                </a>
             </div>
             <div class="card">
                 <div class="circle-icon-container">
@@ -71,19 +59,27 @@
                 </a>
 
                 <a href="search.php">
-                    <button class="add-animal-btn">Remove an existing appointment</button>
-                </a>
-
-                <a href="search.php">
-                    <button class="add-animal-btn">Update an existing appointment</button>
-                </a>
-
-                <a href="search.php">
-                    <button class="add-animal-btn">Create a new vet appointment</button>
+                    <button class="add-animal-btn">Projection</button>
                 </a>
             </div>
             <div class="card">
-                <div class="circle-icon icon4"></div>
+                <div class="circle-icon-container">
+                    <div class="circle-icon icon4"></div>
+                        <h2>Explore</h2>
+                </div>
+                <a href="search.php">
+                    <button class="add-animal-btn">Group By</button>
+                </a>
+
+                <a href="search.php">
+                    <button class="add-animal-btn">Having</button>
+                </a>
+                <a href="search.php">
+                    <button class="add-animal-btn">Nested group by</button>
+                </a>
+                <a href="search.php">
+                    <button class="add-animal-btn">Division</button>
+                </a>
             </div>
         </div>
 	<?php

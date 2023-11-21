@@ -47,19 +47,6 @@
             <input type="submit" value="Update" name="updateSubmit"></p>
         </form>
 
-        <h2>Create a new vet appointment</h2>
-        <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">
-            Date: <input type="text" name="insDate"> <br /><br />
-            Time: <input type="text" name="insTime"> <br /><br />
-            Vet License ID: <input type="text" name="insVetID"> <br /><br />
-            Pet ID: <input type="text" name="insPetID"> <br /><br />
-            Reason: <input type="text" name="insReason"> <br /><br />
-
-            <input type="submit" value="Insert" name="insertSubmit"></p>
-        </form> 
-
-
 	</body>
 </html>
 
