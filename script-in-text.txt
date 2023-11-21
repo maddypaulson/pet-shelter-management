@@ -1,20 +1,18 @@
-CREATE TABLE FundraiserEvent (eventID INTEGER, eventType VARCHAR2(255), eventDate DATE, eventTime TIME,donationGoal INTEGER,PRIMARY KEY (eventID), UNIQUE (eventDate));
+CREATE TABLE FundraiserEvent (eventID INTEGER CONSTRAINT fe_pk PRIMARY KEY, eventType VARCHAR2(50), eventDayTime TIMESTAMP CONSTRAINT fe_u UNIQUE, donationGoal INTEGER);
 
-CREATE TABLE FundraiserEventDate (eventDate DATE, eventTime TIME,PRIMARY KEY (eventDate),UNIQUE (eventDate));
+CREATE TABLE AnimalCaretaker (caretakerID INTEGER CONSTRAINT ac_pk PRIMARY KEY, caretakerName VARCHAR2(100), fundEventID INTEGER CONSTRAINT const_fk REFERENCES FundraiserEvent(eventID) ON DELETE CASCADE, caretakerAddress VARCHAR2(50), caretakerPostalCode VARCHAR2(8));
 
-CREATE TABLE AnimalCaretaker (caretakerID INTEGER, caretakerName VARCHAR2, fundEventID INTEGER, caretakerAddress VARCHAR2, caretakerPostalCode VARCHAR2, PRIMARY KEY (caretakerID), FOREIGN KEY (fundEventID) REFERENCES FundraiserEvent(eventID));
+CREATE TABLE Customer (customerID INTEGER CONSTRAINT c_pk PRIMARY KEY, customerName VARCHAR2(100));
 
-CREATE TABLE Customer (customerID INTEGER, customerName VARCHAR2, PRIMARY KEY (customerID));
+CREATE TABLE Adopter (adopterID INTEGER CONSTRAINT const_fk REFERENCES Customer(customerID) ON DELETE CASCADE, numOfAdoptions INTEGER, safeOwnerRating INTEGER, adopterPostalCode VARCHAR2(8), adopterAddress VARCHAR2(50), PRIMARY KEY (adopterID));
 
-CREATE TABLE Adopter (adopterID INTEGER, numOfAdoptions INTEGER, safeOwnerRating INTEGER,adopterPostalCode VARCHAR2, adopterAddress VARCHAR2, PRIMARY KEY (adopterID), FOREIGN KEY (adopterID) REFERENCES Customer(customerID));
+CREATE TABLE Animal (petID INTEGER, animalName VARCHAR2(50),  type VARCHAR2(25), age INTEGER, favouriteCaretaker INTEGER CONSTRAINT const_fc REFERENCES AnimalCaretaker(caretakerID), previousOwner INTEGER CONSTRAINT const_po REFERENCES Customer(customerID), timeInShelter INTEGER, adopterID INTEGER CONSTRAINT const_a REFERENCES Adopter(adopterID), PRIMARY KEY (petID));
 
-CREATE TABLE Animal (petID INTEGER, animalName VARCHAR2,  type VARCHAR2,age INTEGER, favouriteCaretaker INTEGER, previousOwner INTEGER, timeInShelter INTEGER, adopterID INTEGER, PRIMARY KEY (petID), FOREIGN KEY (favouriteCaretaker) REFERENCES AnimalCaretaker(caretakerID), FOREIGN KEY (previousOwner) REFERENCES Customer(customerID), FOREIGN KEY (adopterID) REFERENCES Adopter(adopterID));
+CREATE TABLE VetAppointment (vetDayTime TIMESTAMP,vetLicenseID INTEGER, reason VARCHAR2(250), petID INTEGER CONSTRAINT const_p REFERENCES Animal(petID), PRIMARY KEY (vetDayTime));
 
-CREATE TABLE VetAppointment (vetDate DATE, vetTime TIME, vetLicenseID INTEGER, reason VARCHAR2, petID INTEGER, PRIMARY KEY (vetDate, vetTime), FOREIGN KEY (petID) REFERENCES Animal(petID));
+CREATE TABLE Worker (workerID INTEGER CONSTRAINT w_pk PRIMARY KEY REFERENCES AnimalCaretaker(caretakerID), hourlyPay INTEGER);
 
-CREATE TABLE Worker (workerID INTEGER, hourlyPay INTEGER, PRIMARY KEY (workerID), FOREIGN KEY (workerID) REFERENCES AnimalCaretaker(caretakerID));
-
-CREATE TABLE Volunteer (volunteerID INTEGER, hoursVolunteered INTEGER, PRIMARY KEY (volunteerID), FOREIGN KEY (volunteerID) REFERENCES AnimalCaretaker(caretakerID));
+CREATE TABLE Volunteer (volunteerID INTEGER CONSTRAINT v_pk PRIMARY KEY REFERENCES AnimalCaretaker(caretakerID), hoursVolunteered INTEGER);
 
 CREATE TABLE Post (postID INTEGER, postType VARCHAR2, description VARCHAR2, postingDate DATE, caretakerID INTEGER, PRIMARY KEY (postID), FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID), UNIQUE(postingDate));
 
