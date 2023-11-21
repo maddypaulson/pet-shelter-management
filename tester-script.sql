@@ -1,3 +1,6 @@
+DROP TABLE AdoptionDetails;
+
+DROP TABLE Post;
 
 DROP TABLE Volunteer;
 
@@ -5,24 +8,15 @@ DROP TABLE Worker;
 
 DROP TABLE VetAppointment;
 
---ALTER TABLE VetAppointment DROP CONSTRAINT va_fk;
 DROP TABLE Animal;
 
---ALTER TABLE Adopter DROP CONSTRAINT a_pk;
---ALTER TABLE Animal DROP CONSTRAINT a_fk_po;
 DROP TABLE Adopter;
 
---ALTER TABLE Animal DROP CONSTRAINT a_fk_aid;
 DROP TABLE Customer;
 
---ALTER TABLE Animal DROP CONSTRAINT a_fk_fc;
---ALTER TABLE Worker DROP CONSTRAINT w_pk;
---ALTER TABLE Volunteer DROP CONSTRAINT v_pk;
 DROP TABLE AnimalCaretaker;
 
---ALTER TABLE AnimalCaretaker DROP CONSTRAINT ac_fk_fe;
 DROP TABLE FundraiserEvent;
-
 
 CREATE TABLE FundraiserEvent (eventID INTEGER CONSTRAINT fe_pk PRIMARY KEY, eventType VARCHAR2(50), eventDayTime DATE CONSTRAINT fe_u UNIQUE, donationGoal NUMBER);
 
@@ -40,4 +34,6 @@ CREATE TABLE Worker (workerID INTEGER CONSTRAINT w_pk PRIMARY KEY REFERENCES Ani
 
 CREATE TABLE Volunteer (volunteerID INTEGER CONSTRAINT v_pk PRIMARY KEY REFERENCES AnimalCaretaker(caretakerID) ON DELETE CASCADE, hoursVolunteered INTEGER);
 
+CREATE TABLE Post (postID INTEGER CONSTRAINT p_pk PRIMARY KEY, postType VARCHAR2(25), description VARCHAR2(100), postingDate DATE CONSTRAINT p_u UNIQUE, caretakerID INTEGER CONSTRAINT p_fk_ac REFERENCES AnimalCaretaker(caretakerID));
 
+CREATE TABLE AdoptionDetails (adoptionID INTEGER CONSTRAINT ad_pk PRIMARY KEY, petID INTEGER CONSTRAINT ad_fk_u UNIQUE REFERENCES Animal(petID), adopterID INTEGER CONSTRAINT ad_fk_aid REFERENCES Adopter(adopterID), caretakerID INTEGER CONSTRAINT ad_fk_ac REFERENCES AnimalCaretaker(caretakerID), adoptionDate DATE, notes VARCHAR2(200));
