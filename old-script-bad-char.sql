@@ -1,4 +1,4 @@
-CREATE TABLE FundraiserEvent (eventID INTEGER, eventType VARCHAR2, eventDate DATE, eventTime TIME,donationGoal INTEGER,PRIMARY KEY (eventID), UNIQUE (eventDate));
+CREATE TABLE FundraiserEvent (eventID INTEGER, eventType VARCHAR2(255), eventDate DATE, eventTime TIME,donationGoal INTEGER,PRIMARY KEY (eventID), UNIQUE (eventDate));
 
 CREATE TABLE FundraiserEventDate (eventDate DATE, eventTime TIME,PRIMARY KEY (eventDate),UNIQUE (eventDate));
 
