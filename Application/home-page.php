@@ -82,32 +82,5 @@
                 </a>
             </div>
         </div>
-	<?php
-	$success = True; //keep track of errors so it redirects the page only if there are no errors
-      	$db_conn = NULL; // edit the login credentials in connectToDB()
-		
-        function connectToDB() {
-            global $db_conn;
-
-            $db_conn = OCILogon("ora_robinmth", "a80425994", "dbhost.students.cs.ubc.ca:1522/stu");
-
-            if ($db_conn) {
-                debugAlertMessage("Database is Connected");
-                return true;
-            } else {
-                debugAlertMessage("Cannot connect to Database");
-                $e = OCI_Error(); // For OCILogon errors pass no handle
-                echo htmlentities($e['message']);
-                return false;
-            }
-        }
-
-        function disconnectFromDB() {
-            global $db_conn;
-
-            debugAlertMessage("Disconnect from Database");
-            OCILogoff($db_conn);
-        }	
-	?>
 	</body>
 </html>

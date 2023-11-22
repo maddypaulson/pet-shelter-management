@@ -66,60 +66,16 @@ CREATE TABLE Animal (
     FOREIGN KEY (adopterID) REFERENCES Adopter(adopterID)
     );
 
-CREATE TABLE VetAppointment (
-    vetDayTime DATE PRIMARY KEY, 
-    vetLicenseID INTEGER, 
-    reason VARCHAR2(250), 
-    petID INTEGER, 
-    FOREIGN KEY (petID) REFERENCES Animal(petID)
-    );
+CREATE TABLE VetAppointment (vetDayTime DATE PRIMARY KEY, vetLicenseID INTEGER, reason VARCHAR2(250), petID INTEGER, FOREIGN KEY (petID) REFERENCES Animal(petID));
 
-CREATE TABLE Worker (
-    workerID INTEGER PRIMARY KEY, 
-    hourlyPay INTEGER, 
-    FOREIGN KEY (workerID) REFERENCES AnimalCaretaker(caretakerID) ON DELETE CASCADE
-    );
+CREATE TABLE Worker (workerID INTEGER PRIMARY KEY, hourlyPay INTEGER, FOREIGN KEY (workerID) REFERENCES AnimalCaretaker(caretakerID) ON DELETE CASCADE);
 
-CREATE TABLE Volunteer (
-    volunteerID INTEGER PRIMARY KEY, 
-    hoursVolunteered INTEGER
-    FOREIGN KEY (volunteerID) REFERENCES AnimalCaretaker(caretakerID) ON DELETE CASCADE;
-    );
+CREATE TABLE Volunteer (volunteerID INTEGER PRIMARY KEY, hoursVolunteered INTEGERFOREIGN KEY (volunteerID) REFERENCES AnimalCaretaker(caretakerID) ON DELETE CASCADE;);
 
-CREATE TABLE Post (
-    postID INTEGER PRIMARY KEY, 
-    postType VARCHAR2(25), 
-    description VARCHAR2(100), 
-    postingDate DATE UNIQUE, 
-    caretakerID INTEGER,
-    FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID)
-    );
+CREATE TABLE Post (postID INTEGER PRIMARY KEY, postType VARCHAR2(25), description VARCHAR2(100), postingDate DATE UNIQUE, caretakerID INTEGER,FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID));
 
-CREATE TABLE AdoptionDetails (
-    adoptionID INTEGER PRIMARY KEY, 
-    petID INTEGER UNIQUE, 
-    adopterID INTEGER, 
-    caretakerID INTEGER, 
-    adoptionDate DATE, 
-    notes VARCHAR2(200),
-    FOREIGN KEY (petID) REFERENCES Animal(petID),
-    FOREIGN KEY (adopterID) REFERENCES Adopter(adopterID),
-    FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID),
-    );
+CREATE TABLE AdoptionDetails (adoptionID INTEGER PRIMARY KEY, petID INTEGER UNIQUE, adopterID INTEGER, caretakerID INTEGER, adoptionDate DATE, notes VARCHAR2(200),FOREIGN KEY (petID) REFERENCES Animal(petID),FOREIGN KEY (adopterID) REFERENCES Adopter(adopterID),FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID),);
 
-CREATE TABLE PetAdopter (
-    petID INTEGER CONSTRAINT pa_pk PRIMARY KEY REFERENCES Animal(petID), 
-    adopterID INTEGER CONSTRAINT pa_fk_aid REFERENCES Adopter(adopterID)
-    FOREIGN KEY (petID) REFERENCES Animal(petID),
-    FOREIGN KEY (adopterID) REFERENCES Adopter(adopterID)
-    );
+CREATE TABLE PetAdopter (petID INTEGER PRIMARY KEY, adopterID INTEGER,FOREIGN KEY (petID) REFERENCES Animal(petID),FOREIGN KEY (adopterID) REFERENCES Adopter(adopterID));
 
-CREATE TABLE Appointment (
-    petID INTEGER, 
-    caretakerID INTEGER, 
-    customerID INTEGER, 
-    apptDayTime DATE, 
-    FOREIGN KEY (petID) REFERENCES Animal(petID), 
-    FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID), 
-    FOREIGN KEY (customerID) REFERENCES Customer(customerID), 
-    PRIMARY KEY (petID, caretakerID, customerID));
+CREATE TABLE Appointment (petID INTEGER, caretakerID INTEGER, customerID INTEGER, apptDayTime DATE, FOREIGN KEY (petID) REFERENCES Animal(petID), FOREIGN KEY (caretakerID) REFERENCES AnimalCaretaker(caretakerID), FOREIGN KEY (customerID) REFERENCES Customer(customerID), PRIMARY KEY (petID, caretakerID, customerID));
