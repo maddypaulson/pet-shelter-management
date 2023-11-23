@@ -1,3 +1,19 @@
+DROP TABLE ItemPrice;
+
+DROP TABLE AdopterPC;
+
+DROP TABLE PostDateAndType;
+
+DROP TABLE AnimalCaretakerPC;
+
+DROP TABLE Vet;
+
+DROP TABLE ItemPurchase;
+
+DROP TABLE Item;
+
+DROP TABLE Donation;
+
 DROP TABLE Appointment;
 
 DROP TABLE PetAdopter;
@@ -22,6 +38,8 @@ DROP TABLE AnimalCaretaker;
 
 DROP TABLE FundraiserEvent;
 
+
+
 CREATE TABLE FundraiserEvent (eventID INTEGER CONSTRAINT fe_pk PRIMARY KEY, eventType VARCHAR2(50), eventDayTime DATE CONSTRAINT fe_u UNIQUE, donationGoal NUMBER);
 
 CREATE TABLE AnimalCaretaker (caretakerID INTEGER CONSTRAINT ac_pk PRIMARY KEY, caretakerName VARCHAR2(100), fundEventID INTEGER CONSTRAINT ac_fk_fe REFERENCES FundraiserEvent(eventID), caretakerAddress VARCHAR2(50), caretakerPostalCode VARCHAR2(8));
@@ -45,3 +63,19 @@ CREATE TABLE AdoptionDetails (adoptionID INTEGER CONSTRAINT ad_pk PRIMARY KEY, p
 CREATE TABLE PetAdopter (petID INTEGER CONSTRAINT pa_pk PRIMARY KEY REFERENCES Animal(petID), adopterID INTEGER CONSTRAINT pa_fk_aid REFERENCES Adopter(adopterID));
 
 CREATE TABLE Appointment (petID INTEGER CONSTRAINT appt_fk_p REFERENCES Animal(petID), caretakerID INTEGER CONSTRAINT appt_fk_ac REFERENCES AnimalCaretaker(caretakerID), customerID INTEGER CONSTRAINT appt_fk_c REFERENCES Customer(customerID), apptDayTime DATE, CONSTRAINT appt_pk PRIMARY KEY (petID, caretakerID, customerID));
+
+CREATE TABLE Donation (customerID INTEGER CONSTRAINT d_fk_c REFERENCES Customer(customerID), caretakerID INTEGER CONSTRAINT d_fk_ac REFERENCES AnimalCaretaker(caretakerID), amount INTEGER, CONSTRAINT d_pk PRIMARY KEY (customerID, caretakerID));
+
+CREATE TABLE Item (itemID INTEGER CONSTRAINT i_pk PRIMARY KEY, itemName VARCHAR2(25), quantity INTEGER);
+
+CREATE TABLE ItemPurchase (customerID INTEGER CONSTRAINT ip_fk_c REFERENCES Customer(customerID), caretakerID INTEGER CONSTRAINT ip_fk_ac REFERENCES AnimalCaretaker(caretakerID), itemID INTEGER CONSTRAINT ip_fk_i REFERENcES Item(itemID), CONSTRAINT ip_pk PRIMARY KEY (customerID, caretakerID, itemID));
+
+CREATE TABLE Vet (vetLicenseID INTEGER CONSTRAINT v_pk PRIMARY KEY, vetName VARCHAR2(50));
+
+CREATE TABLE AnimalCaretakerPC (caretakerPostalCode VARCHAR2(8) CONSTRAINT acpc_pk PRIMARY KEY, caretakerCity VARCHAR2(25));
+
+CREATE TABLE PostDateAndType (postingDate DATE CONSTRAINT pdat_pk PRIMARY KEY, postType VARCHAR2(50) CONSTRAINT);
+
+CREATE TABLE AdopterPC (adopterPostalCode VARCHAR2(8) CONSTRAINT apc_pk PRIMARY KEY, adopterCity VARCHAR2(25));
+
+CREATE TABLE ItemPrice (itemID INTEGER CONSTRAINT ip_pk PRIMARY KEY, total INTEGER);
