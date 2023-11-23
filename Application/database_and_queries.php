@@ -135,7 +135,7 @@
             ":bind4" => $care,
             ":bind5" => $prev_owner,
             ":bind6" => $time,
-            ":bind7" => $adopter,
+            ":bind7" => $adopter
         );
 
         $alltuples = array (
@@ -163,9 +163,9 @@
             return;
         }
 
+        //Q: do I need to delete from all these table or is this handled by script
         executePlainSQL("DELETE FROM VetAppointment WHERE petID = $petID");
         executePlainSQL("DELETE FROM Appointment WHERE petID = $petID");
-        
         executePlainSQL("DELETE FROM Animal WHERE petID = $petID");
     
         OCICommit($db_conn);
@@ -236,19 +236,101 @@
         // If the count is greater than 0, the petID is valid
         return $result[0]['COUNT(*)'] > 0;
     }
+    
+    function handleAppointmentInsertRequest() {
+        global $db_conn;
+
+        $petID = filter_var($_POST['insAnimalName'], FILTER_VALIDATE_INT);
+        $careTakerID = filter_var($_POST['insAnimalType'], FILTER_VALIDATE_INT);
+        $customerID = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
+        $date = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
+        $time = filter_var($_POST['insPrevOwner'], FILTER_SANITIZE_STRING);
+
+        // Validate petID
+        if ($petID === false) {
+            echo "Error: Invalid input for Pet ID.";
+            return;
+        }
+    
+        // Check if the provided petID exists in the Animal table
+        if (!isPetIDValid($petID)) {
+            echo "Error: Pet with ID $petID not found.";
+            return;
+        }
+
+        if($careTakerID === false || $customerID === false || $date === false || $time === false){
+            echo "Error: Invalid input provided, please try again.";
+            return;
+        }
+
+        $tuple = array (
+            ":bind1" => $petID,
+            ":bind2" => $careTakerID,
+            ":bind3" => $customerID,
+            ":bind4" => $date,
+            ":bind5" => $time
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        executeBoundSQL("INSERT INTO Appointment (petID, caretakerID, customerID, apptDate, apptTime) VALUES (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+        OCICommit($db_conn);
+    }
+
+    function handleAppointmentDeleteRequest() {
+        global $db_conn;
+
+        $petID = filter_var($_POST['insAnimalName'], FILTER_VALIDATE_INT);
+        $careTakerID = filter_var($_POST['insAnimalType'], FILTER_VALIDATE_INT);
+        $customerID = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
+        $date = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
+        $time = filter_var($_POST['insPrevOwner'], FILTER_SANITIZE_STRING);
+
+        // Validate petID
+        if ($petID === false) {
+            echo "Error: Invalid input for Pet ID.";
+            return;
+        }
+    
+        // Check if the provided petID exists in the Animal table
+        if (!isPetIDValid($petID)) {
+            echo "Error: Pet with ID $petID not found.";
+            return;
+        }
+
+        //TO DO: VERIFY THAT THE APPOINTMENT EXISTS
+
+        executePlainSQL("DELETE FROM Appointment WHERE petID = $petID AND caretakerID = $careTakerID AND customerID = $customerID AND apptDate = $date AND apptTime = $time");
+    
+        OCICommit($db_conn);
+    
+        echo "Appointment on $date at $time for animal with ID $petID deleted successfully.";
+    }
+
+    function handleJoinRequest(){
+        global $db_conn;
+
+        
+        OCICommit($db_conn);
+    }
 
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handlePOSTRequest() {
         if (connectToDB()) {
-            if (array_key_exists('resetTablesRequest', $_POST)) {
-                handleResetRequest();
-            } else if (array_key_exists('updateQueryRequest', $_POST)) {
-                handleUpdateRequest();
-            } else if (array_key_exists('insertQueryRequest', $_POST)) {
-                handleInsertRequest();
+            if (array_key_exists('insertAnimalSubmit', $_POST)) {
+                handleAnimalInsertRequest();
+            } else if (array_key_exists('deleteAnimalSubmit', $_POST)) {
+                handleAnimalDeleteRequest();
+            } else if (array_key_exists('updateAnimalSubmit', $_POST)) {
+                handleAnimalUpdateRequest();
+            } else if (array_key_exists('insertApptQueryRequest', $_POST)) {
+                handleAppointmentInsertRequest();
+            } else if (array_key_exists('deleteApptQueryRequest', $_POST)) {
+                handleAppointmentDeleteRequest();
             }
-
             disconnectFromDB();
         }
     }

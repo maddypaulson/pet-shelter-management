@@ -13,7 +13,7 @@
         <h1>Appointment Management</h1>
         <h2>Create a new appointment</h2>
         <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">
+            <input type="hidden" id="insertApptQueryRequest" name="insertApptQueryRequest">
             Pet ID: <input type="text" name="insPetID"> <br /><br />
             Caretaker ID: <input type="text" name="insCaretakerID"> <br /><br />
             Customer ID: <input type="text" name="insCustomerID"> <br /><br />
@@ -25,7 +25,7 @@
 
         <h2>Remove an existing appointment</h2>
         <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="deleteQueryRequest" name="deleteQueryRequest">
+            <input type="hidden" id="deleteApptQueryRequest" name="deleteApptQueryRequest">
             Pet ID: <input type="text" name="delPetID"> <br /><br />
             Caretaker ID: <input type="text" name="delCaretakerID"> <br /><br />
             Customer ID: <input type="text" name="delCustomerID"> <br /><br />
@@ -33,21 +33,14 @@
             Appointment Time: <input type="text" name="delAppointTime"> <br /><br />
             <input type="submit" value="Delete" name="deleteSubmit"></p>
         </form>
-
-        <h2>Update an existing appointment</h2>
-        <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
-        <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="updateQueryRequest" name="updateQueryRequest">
-            Pet ID: <input type="text" name="upPetID"> <br /><br />
-            Caretaker ID: <input type="text" name="upCaretakerID"> <br /><br />
-            Customer ID: <input type="text" name="upCustomerID"> <br /><br />
-            Appointment Date: <input type="text" name="upAppointDate"> <br /><br />
-            Appointment Time: <input type="text" name="upAppointTime"> <br /><br />
-
-            <input type="submit" value="Update" name="updateSubmit"></p>
-        </form>
-
 	</body>
+
+    <?php
+        include 'database_and_queries.php';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            handlePOSTRequest();  // Call the function to handle POST requests
+        }
+    ?>
 </html>
 
 

@@ -41,10 +41,6 @@
                 <a href="appointments.php">
                     <button class="add-animal-btn">Remove an existing appointment</button>
                 </a>
-
-                <a href="appointments.php">
-                    <button class="add-animal-btn">Update an existing appointment</button>
-                </a>
             </div>
             <div class="card">
                 <div class="circle-icon-container">
@@ -52,14 +48,14 @@
                         <h2>Search</h2>
                 </div>
                 <a href="search.php">
-                    <button class="add-animal-btn">Find an animal for adoption</button>
+                    <button class="add-animal-btn">Selection Query</button>
                 </a>
                 <a href="search.php">
-                    <button class="add-animal-btn">Find all animals adopted by a certain adopter</button>
+                    <button class="add-animal-btn">Join Query</button>
                 </a>
 
                 <a href="search.php">
-                    <button class="add-animal-btn">Projection</button>
+                    <button class="add-animal-btn">Projection Query</button>
                 </a>
             </div>
             <div class="card">
@@ -68,17 +64,16 @@
                         <h2>Explore</h2>
                 </div>
                 <a href="search.php">
-                    <button class="add-animal-btn">Group By</button>
-                </a>
-
-                <a href="search.php">
-                    <button class="add-animal-btn">Having</button>
+                    <button class="add-animal-btn">Group By Query</button>
                 </a>
                 <a href="search.php">
-                    <button class="add-animal-btn">Nested group by</button>
+                    <button class="add-animal-btn">Having Query</button>
                 </a>
                 <a href="search.php">
-                    <button class="add-animal-btn">Division</button>
+                    <button class="add-animal-btn">Nested Group by Query</button>
+                </a>
+                <a href="search.php">
+                    <button class="add-animal-btn">Division Query</button>
                 </a>
             </div>
         </div>

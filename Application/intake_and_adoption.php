@@ -48,15 +48,8 @@
 
     <?php
         include 'database_and_queries.php';
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['insertAnimalSubmit'])) {
-                handleAnimalInsertRequest();
-            } elseif (isset($_POST['deleteAnimalSubmit'])) {
-                handleAnimalDeleteRequest();
-            } elseif (isset($_POST['updateAnimalSubmit'])) {
-                handleAnimalUpdateRequest();
-            }
+            handlePOSTRequest();  // Call the function to handle POST requests
         }
     ?>
 </html>

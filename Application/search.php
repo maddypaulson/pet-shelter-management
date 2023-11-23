@@ -22,11 +22,11 @@
             <input type="submit" name="selectionSubmit"></p>
         </form>
 
-        <h2>JOIN: Find all animals adopted by a person</h2>
+        <h2>JOIN: Find customers who made donations above a certain amount</h2>
         <form method="GET" action="search.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="joinQueryRequest" name="joinQueryRequest">
-            Adopter ID: <input type="text" name="selectionType"> <br /><br />
-            <input type="submit" name="joinSubmit"></p>
-        </form>
+            <input type="hidden" id="donationQueryRequest" name="donationQueryRequest">
+            Donation Amount: <input type="text" name="donationAmount"> <br /><br />
+            <input type="submit" name="donationSubmit"></p>
+        </form> 
 	</body>
 </html>
