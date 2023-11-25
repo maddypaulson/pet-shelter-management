@@ -60,13 +60,10 @@
             <input type="submit" name="havingSubmit">
         </form>
 
-        <h2>Nested Aggregation with GROUP BY</h2>
+        <h2>DIVISION: Find adopters who adopted all types of animals</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
-            <input type="hidden" id="nestedAggregationQueryRequest" name="nestedAggregationQueryRequest">
-            Find average adoption rate per caretaker
-            <input type="submit" name="nestedAggregationSubmit">
+            <input type="hidden" id="divisionQueryRequest" name="divisionQueryRequest">
+            <input type="submit" name="divisionSubmit">
         </form>
-
-
 	</body>
 </html>
