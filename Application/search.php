@@ -60,10 +60,10 @@
             <input type="submit" name="havingSubmit">
         </form>
 
-        <h2>Nested Aggregation with GROUP BY: Find average adoption rate per caretaker</h2>
+        <h2>Nested Aggregation with GROUP BY</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="nestedAggregationQueryRequest" name="nestedAggregationQueryRequest">
-            
+            Find average adoption rate per caretaker
             <input type="submit" name="nestedAggregationSubmit">
         </form>
 
