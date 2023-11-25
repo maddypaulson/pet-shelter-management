@@ -35,5 +35,38 @@
             Type of animal: <input type="text" name="animalType"> <br /><br />
             <input type="submit" name="groupBySubmit">
         </form>
+
+        <h2>PROJECTION: Choose which attributes you would like to see from Animals table</h2>
+        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="projectionQueryRequest" name="projectionQueryRequest">
+            Attributes you want to see: <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="petID"> petID</label><br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="animalName"> Animal Name</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="type"> Animal Type</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="age"> Animal Age</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="favouriteCaretaker"> Animal's Favorite Caretaker</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="previousOwner"> Animal's Previous Owner</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="timeInShelter"> Time Animal Spent in Shelter</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="adopterID"> adopterId</label> <br /><br />
+                </select><br /><br />
+            <!--Select Attributes: <input type="text" name="projectionAttributes"> <br /><br />-->
+            <input type="submit" name="projectionSubmit">
+        </form>
+
+        <h2>Aggregation with HAVING: Find fundraiser event types with specified average donation goal or above</h2>
+        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="havingQueryRequest" name="havingQueryRequest">
+            Average Donation Goal Value: <input type="text" name="havingAvgDonationGoalThreshold"> <br /><br />
+            <input type="submit" name="havingSubmit">
+        </form>
+
+        <h2>Nested Aggregation with GROUP BY: Find average adoption rate per caretaker</h2>
+        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="nestedAggregationQueryRequest" name="nestedAggregationQueryRequest">
+            
+            <input type="submit" name="nestedAggregationSubmit">
+        </form>
+
+
 	</body>
 </html>
