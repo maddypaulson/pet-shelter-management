@@ -62,8 +62,8 @@ CREATE TABLE AdopterPC (adopterPostalCode VARCHAR2(8) CONSTRAINT apc_pk PRIMARY 
 CREATE TABLE ItemPrice (itemID INTEGER CONSTRAINT itp_pk PRIMARY KEY REFERENCES Item(itemID), total INTEGER);
 
 -- insert statements
-INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Charity Auction', to_date('2023/11/01 18:00', 'YYYY/MM/DD HH:MI'), 5000);
-INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Pet Walkathon', to_date('2023/11/15 10:00', 'YYYY/MM/DD HH:MI'), 3000);
-INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Adoption Fair', to_date('2023/11/30 14:30', 'YYYY/MM/DD HH:MI'), 2000);
-INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Pet Costume Contest', to_date('2023/12/10 15:00', 'YYYY/MM/DD HH:MI'), 2500);
-INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Animal Rescue Gala', to_date('2023/12/25 19:00', 'YYYY/MM/DD HH:MI'), 7000);
+INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Charity Auction', to_date('2023/11/01 18:00', 'YYYY/MM/DD HH24:MI'), 5000);
+INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Pet Walkathon', to_date('2023/11/15 10:00', 'YYYY/MM/DD HH24:MI'), 3000);
+INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Adoption Fair', to_date('2023/11/30 14:30', 'YYYY/MM/DD HH24:MI'), 2000);
+INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Pet Costume Contest', to_date('2023/12/10 15:00', 'YYYY/MM/DD HH24:MI'), 2500);
+INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Animal Rescue Gala', to_date('2023/12/25 19:00', 'YYYY/MM/DD HH24:MI'), 7000);
