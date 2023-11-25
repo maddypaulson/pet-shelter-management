@@ -1,10 +1,13 @@
 # GUI / query requirements
 
 ## 1. INSERT
-- [x] The user should be able to specify what values to insert - input values for the fields in the Animal, VetAppointment, AnimalCaretaker, Worker, Volunteer, FundraiserEvent, SocialMediaPost, Customer, Adopter, Adoption, Appointment, Donation, Item, and Purchase tables.
-- [x] The insert operation should affect more than one table (i.e., an insert should occur on a table with a foreign key) - implement this so insert of data updates all of the related tables when we have foreign key relationship.
+- [x] The user should be able to specify what values to insert
+  - input values for the fields in the Animal, VetAppointment, AnimalCaretaker, Worker, Volunteer, FundraiserEvent, SocialMediaPost, Customer, Adopter, Adoption, Appointment, Donation, Item, and Purchase tables.
+- [x] The insert operation should affect more than one table (i.e., an insert should occur on a table with a foreign key)
+  - implement this so insert of data updates all of the related tables when we have foreign key relationship.
 - [x] The chosen query and table(s) should make sense given the context of the application. 
-- [x] The INSERT operation should be able to handle the case where the foreign key value in the tuple does not exist in the table that is being referred to. - application handles cases where a foreign key value in the tuple does not exist in the referred table.
+- [ ] The INSERT operation should be able to handle the case where the foreign key value in the tuple does not exist in the table that is being referred to.
+  - application handles cases where a foreign key value in the tuple does not exist in the referred table.
 - [x] The tables that the insert operation will run on can be pre-chosen by the group. 
 
 ## 2. DELETE
