@@ -28,5 +28,12 @@
             Donation Amount: <input type="text" name="donationAmount"> <br /><br />
             <input type="submit" name="donationSubmit"></p>
         </form> 
+
+        <h2>GROUP BY: Count how many animals of each type we have in pet shelter</h2>
+        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
+            Type of animal: <input type="text" name="animalType"> <br /><br />
+            <input type="submit" name="groupBySubmit">
+        </form>
 	</body>
 </html>
