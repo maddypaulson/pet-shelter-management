@@ -59,19 +59,19 @@ h1 {
 }
 
 .icon1 {
-    background-image: url('../images/animal_intake.svg');
+    background-image: url('animal_intake.svg');
 }
 
 .icon2 {
-    background-image: url('../images/appointments.svg');
+    background-image: url('appointments.svg');
 }
 
 .icon3 {
-    background-image: url('../images/search.svg');
+    background-image: url('search.svg');
 }
 
 .icon4 {
-    background-image: url('../images/explore.svg');
+    background-image: url('explore.svg');
 }
 
 .add-animal-btn {
@@ -95,4 +95,65 @@ h1 {
 
 a {
     text-decoration: none;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+form input[type="submit"] {
+    background-color: #4c243bc8;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Judson', serif;
+    font-size: 16px;
+    font-weight: bold; 
+}
+
+form input[type="submit"]:hover {
+    background-color: #4c243b; /* Darker color on hover */
+}
+
+/* Section Styling */
+h2 {
+    color: #4C243B;
+    font-family: 'Judson', serif;
+    font-size: 24px;
+    margin-top: 30px;
+}
+
+/* General Styling */
+body {
+    background-color: #f7f7f7;
+    font-family: 'Judson', serif;
+    font-size: 16px;
+    margin: 20px;
+    padding: 20px;
+}
+
+h2{
+    color: #4C243B;
+    font-family: 'Judson', serif;
+    font-size: 24px;
+    margin-top: 30px;
+    text-align: center; /* Center the heading */
+}
+
+p{
+    color: #4C243B;
+    font-family: 'Judson', serif;
+    font-size: 14px;
+    margin-top: 30px;
+    text-align: center; /* Center the heading */
 }

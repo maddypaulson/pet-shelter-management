@@ -11,7 +11,7 @@
 
     <body>
         <h1>Appointment Management</h1>
-        <h2>Create a new appointment</h2>
+        <h2 id="create">Create a new appointment</h2>
         <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
             <input type="hidden" id="insertApptQueryRequest" name="insertApptQueryRequest">
             Pet ID: <input type="text" name="insPetID"> <br /><br />
@@ -23,7 +23,7 @@
             <input type="submit" value="Insert" name="insertSubmit"></p>
         </form> 
 
-        <h2>Remove an existing appointment</h2>
+        <h2 id="remove">Remove an existing appointment</h2>
         <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
             <input type="hidden" id="deleteApptQueryRequest" name="deleteApptQueryRequest">
             Pet ID: <input type="text" name="delPetID"> <br /><br />
