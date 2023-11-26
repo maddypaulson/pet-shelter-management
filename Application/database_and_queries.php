@@ -316,6 +316,36 @@
         OCICommit($db_conn);
     }
 
+    function handleGroupByRequest($animalType){
+        global $db_conn;
+
+        // sanitize user input
+        $type = filter_var($animalType, FILTER_SANITIZE_STRING);
+
+        // check if the provided animalType exists in the Animal table
+        if (!isAnimalTypeValid($type)) {
+            echo "Error: Animal with type $type is not found.";
+            return;
+        }
+
+        $query = "SELECT type, COUNT(*) as typeCount FROM Animal WHERE type = :animalType GROUP BY type";
+
+        $binds = array(":animalType" => $type);
+        $result = executeBoundSQL($query, array($binds));
+
+        echo "<h3> Animal Count for Type: $type </h3>";
+        echo "<table>";
+        echo "<tr><th>Animal Type</th><th>Count</th></tr>";
+
+        foreach ($result as $row) {
+            echo "<tr><td>" . $row["TYPE"] . "</td><td>" . $row["TYPECOUNT"] . "</td></tr>";
+        }
+
+        echo "</table>";
+        OCICommit($db_conn);
+    }
+    
+
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handlePOSTRequest() {
