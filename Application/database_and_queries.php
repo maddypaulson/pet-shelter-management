@@ -115,13 +115,18 @@
     function handleAnimalInsertRequest() {
         global $db_conn;
 
+        $prev_owner = ($_POST['insPrevOwner'] !== '') ? filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT) : null;
+
         $name = filter_var($_POST['insAnimalName'], FILTER_SANITIZE_STRING);
         $type = filter_var($_POST['insAnimalType'], FILTER_SANITIZE_STRING);
         $age = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
-        $care = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
-        $prev_owner = filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT);
+        //$care = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
+        $care = ($_POST['insFavCare'] !== '') ? filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING) : null;
+        $prev_owner = ($_POST['insPrevOwner'] !== '') ? filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT) : null;
+        //$prev_owner = filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT);
         $time = filter_var($_POST['insTimeIn'], FILTER_VALIDATE_INT);
-        $adopter = filter_var($_POST['insAdopterID'], FILTER_VALIDATE_INT);
+        //$adopter = filter_var($_POST['insAdopterID'], FILTER_VALIDATE_INT);
+        $adopter = ($_POST['insAdopterID'] !== '') ? filter_var($_POST['insAdopterID'], FILTER_VALIDATE_INT) : null;
 
         if($name === false || $type === false || $age === false || $care === false || $prev_owner === false || $time === false || adopter === false){
             echo "Error: Invalid input provided, please try again.";
