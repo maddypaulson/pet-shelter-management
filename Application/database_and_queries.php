@@ -39,37 +39,37 @@
     }
 
     function executeBoundSQL($cmdstr, $list) {
-        /* Sometimes the same statement will be executed several times with different values for the variables involved in the query.
-    In this case you don't need to create the statement several times. Bound variables cause a statement to only be
-    parsed once and you can reuse the statement. This is also very useful in protecting against SQL injection.
-    See the sample code below for how this function is used */
-
         global $db_conn, $success;
         $statement = OCIParse($db_conn, $cmdstr);
-
+    
         if (!$statement) {
             echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
             $e = OCI_Error($db_conn);
             echo htmlentities($e['message']);
             $success = False;
         }
-
+    
         foreach ($list as $tuple) {
             foreach ($tuple as $bind => $val) {
-                //echo $val;
-                //echo "<br>".$bind."<br>";
                 OCIBindByName($statement, $bind, $val);
-                unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+                unset($val);
             }
-
+    
             $r = OCIExecute($statement, OCI_DEFAULT);
             if (!$r) {
                 echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-                $e = OCI_Error($statement); // For OCIExecute errors, pass the statementhandle
+                $e = OCI_Error($statement);
                 echo htmlentities($e['message']);
                 echo "<br>";
                 $success = False;
+                // If one execution fails, stop processing further and exit the loop
+                break;
             }
+        }
+    
+        // Display success message only if all commands were successful
+        if ($success) {
+            echo "<br>Operation successful<br>";
         }
     }
 
@@ -88,9 +88,11 @@
     function connectToDB() {
         global $db_conn;
 
+        debugAlertMessage("test");
+
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_robinmth", "a80425994", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_maddy02", "a36440824", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -115,35 +117,53 @@
     function handleAnimalInsertRequest() {
         global $db_conn;
 
+        $petID = filter_var($_POST['insPetID'], FILTER_VALIDATE_INT);
         $name = filter_var($_POST['insAnimalName'], FILTER_SANITIZE_STRING);
         $type = filter_var($_POST['insAnimalType'], FILTER_SANITIZE_STRING);
-        $age = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
-        $care = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
-        $prev_owner = filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT);
-        $time = filter_var($_POST['insTimeIn'], FILTER_VALIDATE_INT);
-        $adopter = filter_var($_POST['insAdopterID'], FILTER_VALIDATE_INT);
-
-        if($name === false || $type === false || $age === false || $care === false || $prev_owner === false || $time === false || adopter === false){
-            echo "Error: Invalid input provided, please try again.";
+        $age = ($_POST['insAge'] !== '') ? filter_var($_POST['insAge'], FILTER_VALIDATE_INT) : null;
+        $care = ($_POST['insFavCare'] !== '') ? filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING) : null;
+        $prev_owner = ($_POST['insPrevOwner'] !== '') ? filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT) : null;
+        $time = ($_POST['insTimeIn'] !== '') ? filter_var($_POST['insTimeIn'], FILTER_VALIDATE_INT) : null;
+        $adopter = ($_POST['insAdopterID'] !== '') ? filter_var($_POST['insAdopterID'], FILTER_VALIDATE_INT) : null;
+        
+        if($petID === false){
+            echo "Error: Invalid petID";
             return;
+        } else if ($age === false){
+            echo "Error: Invalid age";
+            return;
+        } else if ($care === false){
+            echo "Error: Invalid caretaker ID";
+            return;
+        } else if ($prev_owner === false) {
+            echo "Error: Invalid previous owner";
+            return;
+        } else if ($time === false) {
+            echo "Error: Invalid time in shelter";
+            return;
+        } else if ($adopter === false) {
+            echo "Error: Invalid adopter ID";
+            return;            
         }
 
         $tuple = array (
-            ":bind1" => $name,
-            ":bind2" => $type,
-            ":bind3" => $age,
-            ":bind4" => $care,
-            ":bind5" => $prev_owner,
-            ":bind6" => $time,
-            ":bind7" => $adopter
+            ":bind1" => $petID,
+            ":bind2" => $name,
+            ":bind3" => $type,
+            ":bind4" => $age,
+            ":bind5" => $care,
+            ":bind6" => $prev_owner,
+            ":bind7" => $time,
+            ":bind8" => $adopter
         );
 
         $alltuples = array (
             $tuple
         );
 
-        executeBoundSQL("INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, timeInShelter, adopterID) VALUES (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
+        executeBoundSQL("INSERT INTO Animal VALUES (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8)", $alltuples);
         OCICommit($db_conn);
+        
     }
 
     function handleAnimalDeleteRequest() {
@@ -151,26 +171,28 @@
 
         $petID = filter_var($_POST['delPetID'], FILTER_VALIDATE_INT);
 
-        // Validate petID
-        if ($petID === false) {
+        if($petID === false){
             echo "Error: Invalid input for Pet ID.";
             return;
         }
-    
-        // Check if the provided petID exists in the Animal table
+
         if (!isPetIDValid($petID)) {
             echo "Error: Pet with ID $petID not found.";
             return;
         }
 
-        //Q: do I need to delete from all these table or is this handled by script
-        executePlainSQL("DELETE FROM VetAppointment WHERE petID = $petID");
-        executePlainSQL("DELETE FROM Appointment WHERE petID = $petID");
-        executePlainSQL("DELETE FROM Animal WHERE petID = $petID");
-    
+        $tuple = array (
+            ":bind1" => $_POST['delPetID']
+        );
+        
+        $alltuples = array (
+            $tuple
+        );
+
+        executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
+
         OCICommit($db_conn);
-    
-        echo "Animal with ID $petID deleted successfully.";
+
     }
 
     function handleAnimalUpdateRequest() {
@@ -225,17 +247,44 @@
         echo "Animal information updated successfully.";
     }
     
+    //Similar to the execute bound SQL function/
     function isPetIDValid($petID) {
-        global $db_conn;
+        global $db_conn, $success;
     
-        $query = "SELECT COUNT(*) FROM Animal WHERE petID = :bind1";
+        // Use prepared statement to prevent SQL injection
+        $query = "SELECT COUNT(*) AS count FROM Animal WHERE petID = :bind1";
         $binds = array(":bind1" => $petID);
     
-        $result = executeBoundSQL($query, array($binds));
+        $statement = OCIParse($db_conn, $query);
     
-        // If the count is greater than 0, the petID is valid
-        return $result[0]['COUNT(*)'] > 0;
+        if (!$statement) {
+            echo "<br>Cannot parse the following command: " . $query . "<br>";
+            $e = OCI_Error($db_conn);
+            echo htmlentities($e['message']);
+            $success = False;
+        }
+    
+        foreach ($binds as $bind => $val) {
+            OCIBindByName($statement, $bind, $val);
+            unset($val);
+        }
+    
+        $r = OCIExecute($statement, OCI_DEFAULT);
+        if (!$r) {
+            echo "<br>Cannot execute the following command: " . $query . "<br>";
+            $e = OCI_Error($statement);
+            echo htmlentities($e['message']);
+            echo "<br>";
+            $success = False;
+        }
+    
+        // Fetch the result
+        $result = OCI_Fetch_Array($statement, OCI_ASSOC);
+    
+        // Check the count from the result
+        return $result['COUNT'] > 0;
     }
+    
     
     function handleAppointmentInsertRequest() {
         global $db_conn;
@@ -367,7 +416,6 @@
         $selectAttributes = implode(", ", $sanitizedAttributes);
         $query = "SELECT $selectAttributes FROM Animal";
     
-        // $result = executePlainSQL($query);
         $result = executePlainSQL($query);
     
         echo "<h3>Selected Attributes from Animal Table</h3>";

@@ -11,9 +11,10 @@
 
     <body>
         <h1>Intake and Adoption</h1>
-        <h2>Add an animal to the system</h2>
+        <h2 id="add">Add an animal to the system</h2>
         <form method="POST" action="intake_and_adoption.php"> <!--refresh page when submitted-->
             <input type="hidden" id="insertAnimalQueryRequest" name="insertAnimalQueryRequest">
+            PetID: <input type="text" name="insPetID"> <br /><br />
             Animal Name: <input type="text" name="insAnimalName"> <br /><br />
             Animal Type: <input type="text" name="insAnimalType"> <br /><br />
             Age: <input type="text" name="insAge"> <br /><br />
@@ -25,14 +26,14 @@
             <input type="submit" value="Insert" name="insertAnimalSubmit"></p>
         </form>
 
-        <h2>Remove an animal from the system</h2>
+        <h2 id="remove">Remove an animal from the system</h2>
         <form method="POST" action="intake_and_adoption.php"> <!--refresh page when submitted-->
             <input type="hidden" id="deleteAnimalQueryRequest" name="deleteAnimalQueryRequest">
             Pet ID: <input type="text" name="delPetID"> <br /><br />
             <input type="submit" value="Delete" name="deleteAnimalSubmit"></p>
         </form>
 
-        <h2>Update animal information</h2>
+        <h2 id="update">Update animal information</h2>
         <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
         <form method="POST" action="intake_and_adoption.php"> <!--refresh page when submitted-->
             <input type="hidden" id="updateAnimalQueryRequest" name="updateAnimalQueryRequest">

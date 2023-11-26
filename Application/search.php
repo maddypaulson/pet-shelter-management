@@ -12,7 +12,7 @@
     <body>
         <h1>Search the Database</h1>
         
-        <h2>SELECTION: Find an animal for adoption based on animal type, age, or time in the shelter</h2>
+        <h2 id="selection">SELECTION: Find an animal for adoption based on animal type, age, or time in the shelter</h2>
         <form method="GET" action="search.php"> <!--refresh page when submitted-->
             <input type="hidden" id="selectionQueryRequest" name="selectionQueryRequest">
             Animal Type: <input type="text" name="selectionType"> <br /><br />
@@ -22,21 +22,14 @@
             <input type="submit" name="selectionSubmit"></p>
         </form>
 
-        <h2>JOIN: Find customers who made donations above a certain amount</h2>
+        <h2 id="join">JOIN: Find customers who made donations above a certain amount</h2>
         <form method="GET" action="search.php"> <!--refresh page when submitted-->
             <input type="hidden" id="donationQueryRequest" name="donationQueryRequest">
             Donation Amount: <input type="text" name="donationAmount"> <br /><br />
             <input type="submit" name="donationSubmit"></p>
         </form> 
 
-        <h2>GROUP BY: Count how many animals of each type we have in pet shelter</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
-            <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
-            Type of animal: <input type="text" name="animalType"> <br /><br />
-            <input type="submit" name="groupBySubmit">
-        </form>
-
-        <h2>PROJECTION: Choose which attributes you would like to see from Animals table</h2>
+        <h2 id="projection">PROJECTION: Choose which attributes you would like to see from Animals table</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="projectionQueryRequest" name="projectionQueryRequest">
             Attributes you want to see: <br /><br />
@@ -51,19 +44,6 @@
                 </select><br /><br />
             <!--Select Attributes: <input type="text" name="projectionAttributes"> <br /><br />-->
             <input type="submit" name="projectionSubmit">
-        </form>
-
-        <h2>Aggregation with HAVING: Find fundraiser event types with specified average donation goal or above</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
-            <input type="hidden" id="havingQueryRequest" name="havingQueryRequest">
-            Average Donation Goal Value: <input type="text" name="havingAvgDonationGoalThreshold"> <br /><br />
-            <input type="submit" name="havingSubmit">
-        </form>
-
-        <h2>DIVISION: Find adopters who adopted all types of animals</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
-            <input type="hidden" id="divisionQueryRequest" name="divisionQueryRequest">
-            <input type="submit" name="divisionSubmit">
         </form>
 	</body>
 </html>
