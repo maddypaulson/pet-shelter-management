@@ -345,6 +345,52 @@
         OCICommit($db_conn);
     }
     
+    function handleProjectionRequest($selectedAttributes) {
+        global $db_conn;
+    
+        $animalsAttributes = array();
+    
+        foreach ($selectedAttributes as $attribute) {
+            // sanitize user input
+            $animalAttribute = filter_var($attribute, FILTER_SANITIZE_STRING);
+            
+            // validate user input
+            if ($animalAttribute === false) {
+                echo "Error: Invalid input for". $attribute;
+                return;
+            } 
+            else {
+                $animalAttributes[] = $animalAttribute;
+            }
+        }
+    
+        $selectAttributes = implode(", ", $sanitizedAttributes);
+        $query = "SELECT $selectAttributes FROM Animal";
+    
+        $result = executePlainSQL($query);
+    
+        echo "<h3>Selected Attributes from Animal Table</h3>";
+        echo "<table>";
+        
+        echo "<tr>";
+        foreach ($animalAttributes as $attribute) {
+            echo "<th>$attribute</th>";
+        }
+        echo "</tr>";
+    
+        foreach ($result as $row) {
+            echo "<tr>";
+            foreach ($animalAttributes as $attribute) {
+                echo "<td>" . $row[$attribute] . "</td>";
+            }
+            echo "</tr>";
+        }
+    
+        echo "</table>";
+        OCICommit($db_conn);
+    }
+    
+    
 
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
