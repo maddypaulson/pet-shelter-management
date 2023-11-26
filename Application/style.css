@@ -59,19 +59,19 @@ h1 {
 }
 
 .icon1 {
-    background-image: url('animal_intake.svg');
+    background-image: url('../images/animal_intake.svg');
 }
 
 .icon2 {
-    background-image: url('appointments.svg');
+    background-image: url('../images/appointments.svg');
 }
 
 .icon3 {
-    background-image: url('search.svg');
+    background-image: url('../images/search.svg');
 }
 
 .icon4 {
-    background-image: url('explore.svg');
+    background-image: url('../images/explore.svg');
 }
 
 .add-animal-btn {

@@ -63,16 +63,16 @@
                 <div class="circle-icon icon4"></div>
                 <h2>Explore</h2>
             </div>
-            <a href="search.php#groupBy">
+            <a href="explore.php#groupBy">
                 <button class="add-animal-btn">Group By Query</button>
             </a>
-            <a href="search.php#having">
+            <a href="explore.php#having">
                 <button class="add-animal-btn">Having Query</button>
             </a>
-            <a href="search.php">
+            <a href="explore.php">
                 <button class="add-animal-btn">Nested Group by Query</button>
             </a>
-            <a href="search.php#division">
+            <a href="explore.php#division">
                 <button class="add-animal-btn">Division Query</button>
             </a>
         </div>
