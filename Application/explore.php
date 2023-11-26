@@ -29,5 +29,13 @@
             <input type="hidden" id="divisionQueryRequest" name="divisionQueryRequest">
             <input type="submit" name="divisionSubmit">
         </form>
+
+        <h2>Nested Aggregation with GROUP BY: Find average adoption rate per caretaker</h2>
+        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="nestedAggregationQueryRequest" name="nestedAggregationQueryRequest">
+    
+            <input type="submit" name="nestedAggregationSubmit">
+        </form>
+        
 	</body>
 </html>

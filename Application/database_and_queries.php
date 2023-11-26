@@ -438,6 +438,32 @@
         echo "</table>";
         OCICommit($db_conn);
     }
+
+    function handleNestedAggregationRequest() {
+        global $db_conn;
+    
+        $query = "SELECT caretakerID, AVG(numOfAdoptions) as avgAdoptionRate
+                  FROM (
+                      SELECT caretakerID, COUNT(*) as numOfAdoptions
+                      FROM AdoptionDetails
+                      GROUP BY caretakerID
+                  )
+                  GROUP BY caretakerID";
+    
+        $result = executePlainSQL($query);
+    
+        echo "<h3>Average Adoption Rate Per Caretaker</h3>";
+        echo "<table>";
+        echo "<tr><th>Caretaker ID</th><th>Average Adoption Rate</th></tr>";
+    
+        foreach ($result as $row) {
+            echo "<tr><td>" . $row["CARETAKERID"] . "</td><td>" . $row["AVGADOPTIONRATE"] . "</td></tr>";
+        }
+    
+        echo "</table>";
+        OCICommit($db_conn);
+    }
+    
     
     
 
