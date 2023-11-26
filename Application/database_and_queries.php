@@ -367,6 +367,7 @@
         $selectAttributes = implode(", ", $sanitizedAttributes);
         $query = "SELECT $selectAttributes FROM Animal";
     
+        // $result = executePlainSQL($query);
         $result = executePlainSQL($query);
     
         echo "<h3>Selected Attributes from Animal Table</h3>";
