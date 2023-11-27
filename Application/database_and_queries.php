@@ -421,6 +421,74 @@
         echo "Appointment on $date at $time for animal with ID $petID deleted successfully.";
     }
 
+    function handleSelectionRequest() {
+        global $db_conn;
+    
+        $careID = ($_GET['selectionCareID'] !== '') ? filter_var($_GET['selectionCareID'], FILTER_VALIDATE_INT) : null;
+        $careName = ($_GET['selectionName'] !== '') ? "'" . filter_var($_GET['selectionName'], FILTER_SANITIZE_STRING) . "'" : null;
+        $fundraiserID = ($_GET['selectionFundEvent'] !== '') ? filter_var($_GET['selectionFundEvent'], FILTER_VALIDATE_INT) : null;
+        $address = ($_GET['selectionAddress'] !== '') ? "'" . filter_var($_GET['selectionAddress'], FILTER_SANITIZE_STRING) . "'" : null;
+        $postalCode = ($_GET['selectionPostal'] !== '') ? "'" . filter_var($_GET['selectionPostal'], FILTER_SANITIZE_STRING) . "'" : null;
+    
+        if ($careID === false) {
+            echo "Error: Invalid caretaker ID";
+            return;
+        } elseif ($careName === false) {
+            echo "Error: Invalid caretaker name";
+            return;
+        } elseif ($fundraiserID === false) {
+            echo "Error: Invalid fundraiser ID";
+            return;
+        } elseif ($address === false) {
+            echo "Error: Invalid address";
+            return;
+        } elseif ($postalCode === false) {
+            echo "Error: Invalid postal code";
+            return;
+        }
+    
+        $query = "SELECT * FROM AnimalCaretaker WHERE ";
+    
+        $conditions = array();
+        if ($careID !== null) {
+            $conditions[] = "caretakerID = $careID";
+        }
+        if ($careName !== null) {
+            $conditions[] = "caretakerName = $careName";
+        }
+        if ($fundraiserID !== null) {
+            $conditions[] = "fundEventID = $fundraiserID";
+        }
+        if ($address !== null) {
+            $conditions[] = "caretakerAddress = $address";
+        }
+        if ($postalCode !== null) {
+            $conditions[] = "caretakerPostalCode = $postalCode";
+        }
+    
+        $query .= implode(" AND ", $conditions);
+    
+        $result = executePlainSQL($query);
+
+        echo "<h2>Search Results</h2>";
+        echo "<table border='1'>";
+        echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
+    
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['CARETAKERID'] . "</td>";
+            echo "<td>" . $row['CARETAKERNAME'] . "</td>";
+            echo "<td>" . $row['FUNDEVENTID'] . "</td>";
+            echo "<td>" . $row['CARETAKERADDRESS'] . "</td>";
+            echo "<td>" . $row['CARETAKERPOSTALCODE'] . "</td>";
+            echo "</tr>";
+        }
+    
+        echo "</table>";
+
+        OCICommit($db_conn);
+    }
+
     function handleJoinRequest(){
         global $db_conn;
 

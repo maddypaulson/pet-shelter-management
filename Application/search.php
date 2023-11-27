@@ -12,12 +12,14 @@
     <body>
         <h1>Search the Database</h1>
         
-        <h2 id="selection">SELECTION: Find an animal for adoption based on animal type, age, or time in the shelter</h2>
+        <h2 id="selection">SELECTION: Find a Caretaker</h2>
         <form method="GET" action="search.php"> <!--refresh page when submitted-->
             <input type="hidden" id="selectionQueryRequest" name="selectionQueryRequest">
-            Animal Type: <input type="text" name="selectionType"> <br /><br />
-            Age: <input type="text" name="selectionAge"> <br /><br />
-            Time in Shelter: <input type="text" name="selectionTimeIn"> <br /><br />
+            Caretaker ID: <input type="text" name="selectionCareID"> <br /><br />
+            Caretaker Name: <input type="text" name="selectionName"> <br /><br />
+            Fundraiser Event ID: <input type="text" name="selectionFundEvent"> <br /><br />
+            Caretaker Address: <input type="text" name="selectionAddress"> <br /><br />
+            Caretaker Postal Code: <input type="text" name="selectionPostal"> <br /><br />
 
             <input type="submit" name="selectionSubmit"></p>
         </form>
@@ -46,4 +48,13 @@
             <input type="submit" name="projectionSubmit">
         </form>
 	</body>
+    <?php
+        include 'database_and_queries.php';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            handlePOSTRequest();  // Call the function to handle POST requests
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            handleGETRequest();
+        }
+    ?>
 </html>
