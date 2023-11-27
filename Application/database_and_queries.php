@@ -413,7 +413,7 @@
             }
         }
     
-        $selectAttributes = implode(", ", $sanitizedAttributes);
+        $selectAttributes = implode(", ", $animalAttributes);
         $query = "SELECT $selectAttributes FROM Animal";
     
         $result = executePlainSQL($query);
