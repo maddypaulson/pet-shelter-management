@@ -33,6 +33,11 @@
             $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
             echo htmlentities($e['message']);
             $success = False;
+        } else {
+            // Operation was successful
+            if($success){
+                echo "<br>Operation successful<br>";
+            }
         }
 
         return $statement;
@@ -116,55 +121,84 @@
  
     function handleAnimalInsertRequest() {
         global $db_conn;
-
-        $petID = filter_var($_POST['insPetID'], FILTER_VALIDATE_INT);
+    
+        /* Sanitize data */
         $name = filter_var($_POST['insAnimalName'], FILTER_SANITIZE_STRING);
         $type = filter_var($_POST['insAnimalType'], FILTER_SANITIZE_STRING);
         $age = ($_POST['insAge'] !== '') ? filter_var($_POST['insAge'], FILTER_VALIDATE_INT) : null;
         $care = ($_POST['insFavCare'] !== '') ? filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING) : null;
         $prev_owner = ($_POST['insPrevOwner'] !== '') ? filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT) : null;
-        $time = ($_POST['insTimeIn'] !== '') ? filter_var($_POST['insTimeIn'], FILTER_VALIDATE_INT) : null;
+        $arrivalYear = filter_var($_POST['arrivalYear'], FILTER_VALIDATE_INT);
+        $arrivalMonth = filter_var($_POST['arrivalMonth'], FILTER_VALIDATE_INT);
+        $arrivalDay = filter_var($_POST['arrivalDay'], FILTER_VALIDATE_INT);
         $adopter = ($_POST['insAdopterID'] !== '') ? filter_var($_POST['insAdopterID'], FILTER_VALIDATE_INT) : null;
-        
-        if($petID === false){
-            echo "Error: Invalid petID";
+    
+        if ($name === false) {
+            echo "Error: Invalid name";
             return;
-        } else if ($age === false){
+        } elseif ($age === false || $age <= 0) {
             echo "Error: Invalid age";
             return;
-        } else if ($care === false){
+        } elseif ($care === false) {
             echo "Error: Invalid caretaker ID";
             return;
-        } else if ($prev_owner === false) {
+        } elseif ($prev_owner === false) {
             echo "Error: Invalid previous owner";
             return;
-        } else if ($time === false) {
-            echo "Error: Invalid time in shelter";
+        } elseif ($arrivalYear === false || $arrivalMonth === false || $arrivalDay === false) {
+            echo "Error: Invalid arrival date";
             return;
-        } else if ($adopter === false) {
+        } elseif ($adopter === false) {
             echo "Error: Invalid adopter ID";
-            return;            
+            return;
         }
+    
+        // Check caretaker ID
+        if ($care !== null) {
+            if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
+                echo "Error: Invalid caretaker ID";
+                return;
+            }
+        }
+    
+        // Check customer ID
+        if ($prev_owner !== null) {
+            if (!checkForeignKey($prev_owner, "customerID", "Customer")) {
+                echo "Error: Invalid customer ID";
+                return;
+            }
+        }
+    
+        // Check adopter ID
+        if ($adopter !== null) {
+            if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
+                echo "Error: Invalid adopter ID";
+                return;
+            }
+        }
+    
+        // Construct the Arrival Date in the format 'YYYY-MM-DD'
+        $arrivalDate = sprintf("%04d-%02d-%02d", $arrivalYear, $arrivalMonth, $arrivalDay);
 
-        $tuple = array (
-            ":bind1" => $petID,
-            ":bind2" => $name,
-            ":bind3" => $type,
-            ":bind4" => $age,
-            ":bind5" => $care,
-            ":bind6" => $prev_owner,
-            ":bind7" => $time,
-            ":bind8" => $adopter
+    
+        $tuple = array(
+            ":bind1" => $name,
+            ":bind2" => $type,
+            ":bind3" => $age,
+            ":bind4" => $care,
+            ":bind5" => $prev_owner,
+            ":bind6" => $arrivalDate,
+            ":bind7" => $adopter
         );
-
-        $alltuples = array (
+    
+        $alltuples = array(
             $tuple
         );
-
-        executeBoundSQL("INSERT INTO Animal VALUES (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8)", $alltuples);
+    
+        executeBoundSQL("INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES (:bind1, :bind2, :bind3, :bind4, :bind5, TO_DATE(:bind6, 'YYYY-MM-DD'), :bind7)", $alltuples);
         OCICommit($db_conn);
-        
     }
+    
 
     function handleAnimalDeleteRequest() {
         global $db_conn;
@@ -189,6 +223,8 @@
             $tuple
         );
 
+        executeBoundSQL("DELETE FROM PetAdopter WHERE petID = :bind1", $alltuples);
+        executeBoundSQL("DELETE FROM Appointment WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
 
         OCICommit($db_conn);
@@ -197,55 +233,45 @@
 
     function handleAnimalUpdateRequest() {
         global $db_conn;
-    
-        // Sanitize and validate user input
+
         $petID = filter_var($_POST['upPetID'], FILTER_VALIDATE_INT);
-        $age = filter_var($_POST['upAge'], FILTER_VALIDATE_INT);
-        $favCare = filter_var($_POST['upFavCare'], FILTER_SANITIZE_STRING);
-        $timeIn = filter_var($_POST['upTimeIn'], FILTER_VALIDATE_INT);
-        $adopterID = filter_var($_POST['upAdopterID'], FILTER_VALIDATE_INT);
-    
-        // Validate petID
-        if ($petID === false) {
+        $age = ($_POST['upAge'] !== '') ? filter_var($_POST['upAge'], FILTER_VALIDATE_INT) : null;
+        $care = ($_POST['upFavCare'] !== '') ? filter_var($_POST['upFavCare'], FILTER_SANITIZE_STRING) : null;
+        $adopter = ($_POST['upAdopterID'] !== '') ? filter_var($_POST['upAdopterID'], FILTER_VALIDATE_INT) : null;
+
+        if($petID === false){
             echo "Error: Invalid input for Pet ID.";
             return;
         }
-    
-        // Check if the provided petID exists in the Animal table
+
         if (!isPetIDValid($petID)) {
             echo "Error: Pet with ID $petID not found.";
             return;
         }
-    
-        // Prepare the update query with bind variables
-        $query = "UPDATE Animal SET ";
-        $bindArray = array();
-    
-        if ($age !== false) {
-            $query .= "age = :age, ";
-            $bindArray[":age"] = $age;
+
+        if ($care !== null) {
+            if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
+                echo "Error: Invalid caretaker ID";
+                return;
+            }
+            executePlainSQL("UPDATE Animal SET favouriteCaretaker='" . $care . "' WHERE petID='" . $petID . "'");
         }
-        if ($favCare !== false) {
-            $query .= "favouriteCaretaker = :favCare, ";
-            $bindArray[":favCare"] = $favCare;
+
+        if ($adopter !== null) {
+            if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
+                echo "Error: Invalid adopter ID";
+                return;
+            }
+            executePlainSQL("UPDATE Animal SET adopterID='" . $adopter . "' WHERE petID='" . $petID . "'");
         }
-        if ($timeIn !== false) {
-            $query .= "timeInShelter = :timeIn, ";
-            $bindArray[":timeIn"] = $timeIn;
+
+        if($age !== null){
+            executePlainSQL("UPDATE Animal SET age='" . $age . "' WHERE petID='" . $petID . "'");
         }
-        if ($adopterID !== false) {
-            $query .= "adopterID = :adopterID, ";
-            $bindArray[":adopterID"] = $adopterID;
-        }
-    
-        $query = rtrim($query, ", ") . " WHERE petID = :petID";
-        $bindArray[":petID"] = $petID;
-  
-        executeBoundSQL($query, $bindArray);
+        
         OCICommit($db_conn);
-    
-        echo "Animal information updated successfully.";
     }
+    
     
     //Similar to the execute bound SQL function/
     function isPetIDValid($petID) {
@@ -284,7 +310,44 @@
         // Check the count from the result
         return $result['COUNT'] > 0;
     }
+
+    //Similar to the execute bound SQL function
+    function checkForeignKey($foreign_key, $attribute_name, $table) {
+        global $db_conn, $success;
     
+        // Use prepared statement to prevent SQL injection
+        $query = "SELECT COUNT(*) AS count FROM $table WHERE $attribute_name = :bind1";
+        $binds = array(":bind1" => $foreign_key);
+    
+        $statement = OCIParse($db_conn, $query);
+    
+        if (!$statement) {
+            echo "<br>Cannot parse the following command: " . $query . "<br>";
+            $e = OCI_Error($db_conn);
+            echo htmlentities($e['message']);
+            $success = False;
+        }
+    
+        foreach ($binds as $bind => $val) {
+            OCIBindByName($statement, $bind, $val);
+            unset($val);
+        }
+    
+        $r = OCIExecute($statement, OCI_DEFAULT);
+        if (!$r) {
+            echo "<br>Cannot execute the following command: " . $query . "<br>";
+            $e = OCI_Error($statement);
+            echo htmlentities($e['message']);
+            echo "<br>";
+            $success = False;
+        }
+    
+        // Fetch the result
+        $result = OCI_Fetch_Array($statement, OCI_ASSOC);
+    
+        // Check the count from the result
+        return $result['COUNT'] > 0;
+    }
     
     function handleAppointmentInsertRequest() {
         global $db_conn;

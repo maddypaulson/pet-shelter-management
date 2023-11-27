@@ -157,3 +157,49 @@ p{
     margin-top: 30px;
     text-align: center; /* Center the heading */
 }
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.date-dropdowns {
+    display: flex;
+    gap: 10px;
+}
+
+.date-dropdowns select {
+    width: 33%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Apply form input styling to dropdowns */
+form .date-dropdowns select,
+form input[type="text"],
+form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.date-dropdowns {
+    display: flex;
+    gap: 10px;
+}
+
+.animal-dropdown select {
+    width: 33%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Apply form input styling to dropdowns */
+form .animal-dropdown select,
+form input[type="text"],
+form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
