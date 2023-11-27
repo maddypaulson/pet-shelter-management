@@ -1,6 +1,3 @@
-<!-- CITATION: This code was based on the oracle-test.php example provided by the 
-CPSC 304 teaching team.-->
-
 <?php
     /* DATABASE MANAGEMENT FUNCTIONS */
     
@@ -156,7 +153,7 @@ CPSC 304 teaching team.-->
             return;
         }
     
-        /* Check caretaker ID */
+        // Check caretaker ID
         if ($care !== null) {
             if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
                 echo "Error: Invalid caretaker ID";
@@ -164,7 +161,7 @@ CPSC 304 teaching team.-->
             }
         }
     
-        /* Check customer ID */
+        // Check customer ID
         if ($prev_owner !== null) {
             if (!checkForeignKey($prev_owner, "customerID", "Customer")) {
                 echo "Error: Invalid customer ID";
@@ -172,7 +169,7 @@ CPSC 304 teaching team.-->
             }
         }
     
-        /* Check adopter ID */
+        // Check adopter ID
         if ($adopter !== null) {
             if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
                 echo "Error: Invalid adopter ID";
@@ -180,8 +177,9 @@ CPSC 304 teaching team.-->
             }
         }
     
-        /* Construct date in YYYY-MM-DD */
+        // Construct the Arrival Date in the format 'YYYY-MM-DD'
         $arrivalDate = sprintf("%04d-%02d-%02d", $arrivalYear, $arrivalMonth, $arrivalDay);
+
     
         $tuple = array(
             ":bind1" => $name,
@@ -225,12 +223,12 @@ CPSC 304 teaching team.-->
             $tuple
         );
 
-        /* Remove entries with petID from child tables */
         executeBoundSQL("DELETE FROM PetAdopter WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Appointment WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
 
         OCICommit($db_conn);
+
     }
 
     function handleAnimalUpdateRequest() {
@@ -274,10 +272,12 @@ CPSC 304 teaching team.-->
         OCICommit($db_conn);
     }
     
-    /* Check whether the petID is actually in the Animal table */
+    
+    //Similar to the execute bound SQL function/
     function isPetIDValid($petID) {
         global $db_conn, $success;
     
+        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM Animal WHERE petID = :bind1";
         $binds = array(":bind1" => $petID);
     
@@ -303,17 +303,19 @@ CPSC 304 teaching team.-->
             echo "<br>";
             $success = False;
         }
-
+    
+        // Fetch the result
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
-
-        /* If count is greater than 0 then the petID exists in the Animal table */
+    
+        // Check the count from the result
         return $result['COUNT'] > 0;
     }
 
-    /* Check if a foreign key exists in the table that is passed in */
+    //Similar to the execute bound SQL function
     function checkForeignKey($foreign_key, $attribute_name, $table) {
         global $db_conn, $success;
     
+        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM $table WHERE $attribute_name = :bind1";
         $binds = array(":bind1" => $foreign_key);
     
@@ -339,9 +341,11 @@ CPSC 304 teaching team.-->
             echo "<br>";
             $success = False;
         }
-
+    
+        // Fetch the result
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
     
+        // Check the count from the result
         return $result['COUNT'] > 0;
     }
     
@@ -466,8 +470,7 @@ CPSC 304 teaching team.-->
     
         $result = executePlainSQL($query);
 
-        /* Print the table */
-        echo "<h1>Search Results</h1>";
+        echo "<h2>Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
 
@@ -500,9 +503,9 @@ CPSC 304 teaching team.-->
         JOIN Donation ON Customer.customerID = Donation.customerID
         WHERE Donation.amount > $donation";
     
+        // Execute the query without binding
         $result = executePlainSQL($query);
-
-        /* Print the table */
+    
         echo "<h1>Search Results</h1>";
         echo "<h2>Customers with Donations above $donation</h2>";
         echo "<table border='1'>";
@@ -520,32 +523,44 @@ CPSC 304 teaching team.-->
         OCICommit($db_conn);
     }    
 
-    function handleGroupByRequest($animalType){
+    function handleGroupByRequest(){
         global $db_conn;
 
-        // sanitize user input
-        $type = filter_var($animalType, FILTER_SANITIZE_STRING);
+        $animal_type = ($_GET['animalType'] !== '') ? "'" . filter_var($_GET['animalType'], FILTER_SANITIZE_STRING) . "'" : null;
 
-        // check if the provided animalType exists in the Animal table
-        if (!isAnimalTypeValid($type)) {
-            echo "Error: Animal with type $type is not found.";
+        if ($type === false) {
+            echo "Error: Invalid animal type";
             return;
         }
 
-        $query = "SELECT type, COUNT(*) as typeCount FROM Animal WHERE type = :animalType GROUP BY type";
+        $query = "SELECT type, COUNT(*) as typeCount FROM Animal WHERE ";
+    
+        if ($type !== null) {
+            $where_condition = "type = $animal_type";
+            $groupby_condition = "$animal_type";
+        }
+    
+        $query = "SELECT type, COUNT(*) as typeCount 
+                FROM Animal 
+                WHERE type = $animal_type
+                GROUP BY $animal_type"; 
 
-        $binds = array(":animalType" => $type);
-        $result = executeBoundSQL($query, array($binds));
+    
+        $result = executePlainSQL($query);
 
-        echo "<h3> Animal Count for Type: $type </h3>";
+        echo "<h2> Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Animal Type</th><th>Count</th></tr>";
 
-        foreach ($result as $row) {
-            echo "<tr><td>" . $row["TYPE"] . "</td><td>" . $row["TYPECOUNT"] . "</td></tr>";
+        while($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['TYPE'] . "</td>";
+            echo "<td>" . $row['TYPECOUNT'] . "</td>";
+            echo "</tr>";
         }
 
         echo "</table>";
+
         OCICommit($db_conn);
     }
     
@@ -619,6 +634,9 @@ CPSC 304 teaching team.-->
         OCICommit($db_conn);
     }
     
+    
+    
+
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handlePOSTRequest() {
