@@ -36,7 +36,7 @@
         } else {
             // Operation was successful
             if($success){
-                echo "<br>Operation successful<br>";
+                echo "<h3>Operation successful<h3>";
             }
         }
 
@@ -74,7 +74,7 @@
     
         // Display success message only if all commands were successful
         if ($success) {
-            echo "<br>Operation successful<br>";
+            echo "<h3>Operation successful<h3>";
         }
     }
 
@@ -471,9 +471,9 @@
         $result = executePlainSQL($query);
 
         echo "<h2>Search Results</h2>";
-        echo "<table border='1'>";
+        echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
-    
+
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
             echo "<td>" . $row['CARETAKERID'] . "</td>";
@@ -483,18 +483,45 @@
             echo "<td>" . $row['CARETAKERPOSTALCODE'] . "</td>";
             echo "</tr>";
         }
-    
+
         echo "</table>";
 
         OCICommit($db_conn);
-    }
+    }    
 
     function handleJoinRequest(){
         global $db_conn;
-
+    
+        $donation = ($_GET['donationAmount'] !== '') ? filter_var($_GET['donationAmount'], FILTER_VALIDATE_INT) : null;
         
+        if($donation === false){
+            echo "Error: Donation must be an integer value.";
+            return;
+        }
+    
+        $query = "SELECT Customer.customerName, Donation.amount FROM Customer
+        JOIN Donation ON Customer.customerID = Donation.customerID
+        WHERE Donation.amount > $donation";
+    
+        // Execute the query without binding
+        $result = executePlainSQL($query);
+    
+        echo "<h1>Search Results</h1>";
+        echo "<h2>Customers with Donations above $donation</h2>";
+        echo "<table border='1'>";
+        echo "<tr><th>Customer Name</th><th>Donation Amount</th></tr>";
+    
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['CUSTOMERNAME'] . "</td>";
+            echo "<td>" . $row['AMOUNT'] . "</td>";
+            echo "</tr>";
+        }
+    
+        echo "</table>";
+    
         OCICommit($db_conn);
-    }
+    }    
 
     function handleGroupByRequest($animalType){
         global $db_conn;
