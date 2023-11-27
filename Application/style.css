@@ -14,6 +14,8 @@ h2 {
     font-size: 30px;
     padding-bottom: 5px;
     margin-bottom: 20px;
+    margin-top: 30px;
+    text-align: center;
 }
 
 h1 {
@@ -59,19 +61,19 @@ h1 {
 }
 
 .icon1 {
-    background-image: url('animal_intake.svg');
+    background-image: url('../images/animal_intake.svg');
 }
 
 .icon2 {
-    background-image: url('appointments.svg');
+    background-image: url('../images/appointments.svg');
 }
 
 .icon3 {
-    background-image: url('search.svg');
+    background-image: url('../images/search.svg');
 }
 
 .icon4 {
-    background-image: url('explore.svg');
+    background-image: url('../images/explore.svg');
 }
 
 .add-animal-btn {
@@ -122,18 +124,9 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:hover {
-    background-color: #4c243b; /* Darker color on hover */
+    background-color: #4c243b;
 }
 
-/* Section Styling */
-h2 {
-    color: #4C243B;
-    font-family: 'Judson', serif;
-    font-size: 24px;
-    margin-top: 30px;
-}
-
-/* General Styling */
 body {
     background-color: #f7f7f7;
     font-family: 'Judson', serif;
@@ -142,20 +135,12 @@ body {
     padding: 20px;
 }
 
-h2{
-    color: #4C243B;
-    font-family: 'Judson', serif;
-    font-size: 24px;
-    margin-top: 30px;
-    text-align: center; /* Center the heading */
-}
-
 p{
     color: #4C243B;
     font-family: 'Judson', serif;
     font-size: 14px;
     margin-top: 30px;
-    text-align: center; /* Center the heading */
+    text-align: center;
 }
 
 .form-group {
@@ -173,7 +158,6 @@ p{
     box-sizing: border-box;
 }
 
-/* Apply form input styling to dropdowns */
 form .date-dropdowns select,
 form input[type="text"],
 form input[type="submit"] {
@@ -183,18 +167,12 @@ form input[type="submit"] {
     box-sizing: border-box;
 }
 
-.date-dropdowns {
-    display: flex;
-    gap: 10px;
-}
-
 .animal-dropdown select {
     width: 33%;
     padding: 10px;
     box-sizing: border-box;
 }
 
-/* Apply form input styling to dropdowns */
 form .animal-dropdown select,
 form input[type="text"],
 form input[type="submit"] {
@@ -224,15 +202,25 @@ td {
     text-align: left;
 }
 
-/* Center the h2 for the Search Results */
-h2 {
-    text-align: center;
-}
-
 h3 {
     color: #369447;
     font-family: 'Judson', serif;
     font-size: 24px;
     margin-top: 30px;
     text-align: left;
+}
+
+.return-home {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #4c243bc8;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Judson', serif;
+    font-size: 16px;
+    font-weight: bold; 
+    margin-bottom: 40px;
 }

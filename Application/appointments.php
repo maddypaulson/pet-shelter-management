@@ -11,6 +11,9 @@
 
     <body>
         <h1>Appointment Management</h1>
+        <a href="home-page.php">
+            <button class="return-home">Return to Home Page</button>
+        </a>
         <h2 id="create">Create a new appointment</h2>
         <form method="POST" action="appointments.php"> <!--refresh page when submitted-->
             <input type="hidden" id="insertApptQueryRequest" name="insertApptQueryRequest">
@@ -34,11 +37,14 @@
             <input type="submit" value="Delete" name="deleteSubmit"></p>
         </form>
 	</body>
-
+    <!-- call GET or POST function -->
     <?php
         include 'database_and_queries.php';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            handlePOSTRequest();  // Call the function to handle POST requests
+            handlePOSTRequest();
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            handleGETRequest();
         }
     ?>
 </html>

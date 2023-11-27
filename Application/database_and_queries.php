@@ -1,3 +1,6 @@
+<!-- CITATION: This code was based on the oracle-test.php example provided by the 
+CPSC 304 teaching team.-->
+
 <?php
     /* DATABASE MANAGEMENT FUNCTIONS */
     
@@ -153,7 +156,7 @@
             return;
         }
     
-        // Check caretaker ID
+        /* Check caretaker ID */
         if ($care !== null) {
             if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
                 echo "Error: Invalid caretaker ID";
@@ -161,7 +164,7 @@
             }
         }
     
-        // Check customer ID
+        /* Check customer ID */
         if ($prev_owner !== null) {
             if (!checkForeignKey($prev_owner, "customerID", "Customer")) {
                 echo "Error: Invalid customer ID";
@@ -169,7 +172,7 @@
             }
         }
     
-        // Check adopter ID
+        /* Check adopter ID */
         if ($adopter !== null) {
             if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
                 echo "Error: Invalid adopter ID";
@@ -177,9 +180,8 @@
             }
         }
     
-        // Construct the Arrival Date in the format 'YYYY-MM-DD'
+        /* Construct date in YYYY-MM-DD */
         $arrivalDate = sprintf("%04d-%02d-%02d", $arrivalYear, $arrivalMonth, $arrivalDay);
-
     
         $tuple = array(
             ":bind1" => $name,
@@ -223,12 +225,12 @@
             $tuple
         );
 
+        /* Remove entries with petID from child tables */
         executeBoundSQL("DELETE FROM PetAdopter WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Appointment WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
 
         OCICommit($db_conn);
-
     }
 
     function handleAnimalUpdateRequest() {
@@ -272,12 +274,10 @@
         OCICommit($db_conn);
     }
     
-    
-    //Similar to the execute bound SQL function/
+    /* Check whether the petID is actually in the Animal table */
     function isPetIDValid($petID) {
         global $db_conn, $success;
     
-        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM Animal WHERE petID = :bind1";
         $binds = array(":bind1" => $petID);
     
@@ -303,19 +303,17 @@
             echo "<br>";
             $success = False;
         }
-    
-        // Fetch the result
+
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
-    
-        // Check the count from the result
+
+        /* If count is greater than 0 then the petID exists in the Animal table */
         return $result['COUNT'] > 0;
     }
 
-    //Similar to the execute bound SQL function
+    /* Check if a foreign key exists in the table that is passed in */
     function checkForeignKey($foreign_key, $attribute_name, $table) {
         global $db_conn, $success;
     
-        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM $table WHERE $attribute_name = :bind1";
         $binds = array(":bind1" => $foreign_key);
     
@@ -341,11 +339,9 @@
             echo "<br>";
             $success = False;
         }
-    
-        // Fetch the result
+
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
     
-        // Check the count from the result
         return $result['COUNT'] > 0;
     }
     
@@ -470,7 +466,8 @@
     
         $result = executePlainSQL($query);
 
-        echo "<h2>Search Results</h2>";
+        /* Print the table */
+        echo "<h1>Search Results</h1>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
 
@@ -503,9 +500,9 @@
         JOIN Donation ON Customer.customerID = Donation.customerID
         WHERE Donation.amount > $donation";
     
-        // Execute the query without binding
         $result = executePlainSQL($query);
-    
+
+        /* Print the table */
         echo "<h1>Search Results</h1>";
         echo "<h2>Customers with Donations above $donation</h2>";
         echo "<table border='1'>";
@@ -622,9 +619,6 @@
         OCICommit($db_conn);
     }
     
-    
-    
-
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handlePOSTRequest() {

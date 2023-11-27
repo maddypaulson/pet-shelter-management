@@ -11,6 +11,9 @@
 
     <body>
         <h1>Explore</h1>
+        <a href="home-page.php">
+            <button class="return-home">Return to Home Page</button>
+        </a>
         <h2 id="groupBy">GROUP BY: Count how many animals of each type we have in pet shelter</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
@@ -30,4 +33,14 @@
             <input type="submit" name="divisionSubmit">
         </form>
 	</body>
+    <!-- call GET or POST function -->
+    <?php
+        include 'database_and_queries.php';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            handlePOSTRequest();
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            handleGETRequest();
+        }
+    ?>
 </html>

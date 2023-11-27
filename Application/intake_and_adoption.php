@@ -11,6 +11,9 @@
 
     <body>
         <h1>Intake and Adoption</h1>
+        <a href="home-page.php">
+            <button class="return-home">Return to Home Page</button>
+        </a>
         <h2 id="add">Add an animal to the system</h2>
         <form method="POST" action="intake_and_adoption.php"> <!--refresh page when submitted-->
             <input type="hidden" id="insertAnimalQueryRequest" name="insertAnimalQueryRequest">
@@ -40,7 +43,7 @@
             <div class="date-dropdowns">
                 <select name="arrivalYear">
                     <?php
-                    // Generate options for years (adjust the range as needed)
+                    // Generate year options
                     for ($year = 2000; $year <= 2050; $year++) {
                         echo "<option value=\"$year\">$year</option>";
                     }
@@ -48,7 +51,7 @@
                 </select>
                 <select name="arrivalMonth">
                     <?php
-                    // Generate options for months
+                    // Generate month options
                     for ($month = 1; $month <= 12; $month++) {
                         $monthName = date("F", mktime(0, 0, 0, $month, 1, 2000));
                         echo "<option value=\"$month\">$monthName</option>";
@@ -57,7 +60,7 @@
                 </select>
                 <select name="arrivalDay">
                     <?php
-                    // Generate options for days
+                    // Generate day options
                     for ($day = 1; $day <= 31; $day++) {
                         echo "<option value=\"$day\">$day</option>";
                     }
@@ -89,11 +92,14 @@
             <input type="submit" value="Update" name="updateAnimalSubmit"></p>
         </form>
 	</body>
-
+    <!-- call GET or POST function -->
     <?php
         include 'database_and_queries.php';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            handlePOSTRequest();  // Call the function to handle POST requests
+            handlePOSTRequest();
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            handleGETRequest();
         }
     ?>
 </html>
