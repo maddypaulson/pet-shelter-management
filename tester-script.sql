@@ -39,11 +39,11 @@ CREATE TABLE Volunteer (volunteerID INTEGER CONSTRAINT v_pk PRIMARY KEY REFERENC
 
 CREATE TABLE Post (postID INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAINT p_pk PRIMARY KEY, postType VARCHAR2(25), description VARCHAR2(100), postingDate DATE CONSTRAINT p_u UNIQUE NOT NULL, caretakerID INTEGER CONSTRAINT p_fk_ac REFERENCES AnimalCaretaker(caretakerID));
 
-CREATE TABLE AdoptionDetails (adoptionID INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAINT ad_pk PRIMARY KEY, petID INTEGER CONSTRAINT ad_fk_u UNIQUE REFERENCES Animal(petID), adopterID INTEGER CONSTRAINT ad_fk_aid REFERENCES Adopter(adopterID), caretakerID INTEGER CONSTRAINT ad_fk_ac REFERENCES AnimalCaretaker(caretakerID), adoptionDate DATE, notes VARCHAR2(200));
+CREATE TABLE AdoptionDetails (adoptionID INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAINT ad_pk PRIMARY KEY, petID INTEGER CONSTRAINT ad_fk_u UNIQUE REFERENCES Animal(petID) ON DELETE CASCADE, adopterID INTEGER CONSTRAINT ad_fk_aid REFERENCES Adopter(adopterID) ON DELETE CASCADE, caretakerID INTEGER CONSTRAINT ad_fk_ac REFERENCES AnimalCaretaker(caretakerID), adoptionDate DATE, notes VARCHAR2(200));
 
-CREATE TABLE PetAdopter (petID INTEGER CONSTRAINT pa_pk PRIMARY KEY REFERENCES Animal(petID), adopterID INTEGER CONSTRAINT pa_fk_aid REFERENCES Adopter(adopterID));
+CREATE TABLE PetAdopter (petID INTEGER CONSTRAINT pa_pk PRIMARY KEY REFERENCES Animal(petID) ON DELETE CASCADE, adopterID INTEGER CONSTRAINT pa_fk_aid REFERENCES Adopter(adopterID));
 
-CREATE TABLE Appointment (petID INTEGER CONSTRAINT appt_fk_p REFERENCES Animal(petID), caretakerID INTEGER CONSTRAINT appt_fk_ac REFERENCES AnimalCaretaker(caretakerID), customerID INTEGER CONSTRAINT appt_fk_c REFERENCES Customer(customerID), apptDayTime DATE CONSTRAINT appt_nn NOT NULL, CONSTRAINT appt_pk PRIMARY KEY (petID, caretakerID, customerID));
+CREATE TABLE Appointment (petID INTEGER CONSTRAINT appt_fk_p REFERENCES Animal(petID) ON DELETE CASCADE, caretakerID INTEGER CONSTRAINT appt_fk_ac REFERENCES AnimalCaretaker(caretakerID), customerID INTEGER CONSTRAINT appt_fk_c REFERENCES Customer(customerID) ON DELETE CASCADE, apptDayTime DATE CONSTRAINT appt_nn NOT NULL, CONSTRAINT appt_pk PRIMARY KEY (petID, caretakerID, customerID));
 
 CREATE TABLE Donation (customerID INTEGER CONSTRAINT d_fk_c REFERENCES Customer(customerID), caretakerID INTEGER CONSTRAINT d_fk_ac REFERENCES AnimalCaretaker(caretakerID), amount INTEGER, CONSTRAINT d_pk PRIMARY KEY (customerID, caretakerID));
 
@@ -59,7 +59,7 @@ CREATE TABLE PostDateAndType (postingDate DATE CONSTRAINT pdat_pk PRIMARY KEY, p
 
 CREATE TABLE AdopterPC (adopterPostalCode VARCHAR2(8) CONSTRAINT apc_pk PRIMARY KEY, adopterCity VARCHAR2(25));
 
-CREATE TABLE ItemPrice (itemID INTEGER CONSTRAINT itp_pk PRIMARY KEY REFERENCES Item(itemID), total INTEGER);
+CREATE TABLE ItemPrice (itemID INTEGER CONSTRAINT itp_pk PRIMARY KEY REFERENCES Item(itemID) ON DELETE CASCADE, total INTEGER);
 
 -- insert statements
 INSERT INTO FundraiserEvent (eventType, eventDayTime, donationGoal) VALUES ('Charity Auction', to_date('2023/11/01 18:00', 'YYYY/MM/DD HH24:MI'), 5000);
