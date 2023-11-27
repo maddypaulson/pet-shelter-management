@@ -14,7 +14,7 @@
         <a href="home-page.php">
             <button class="return-home">Return to Home Page</button>
         </a>
-        <h2 id="groupBy">GROUP BY: Count how many animals of each type we have in pet shelter</h2>
+        <h2 id="groupBy">GROUP BY: Count how many animals of specific type we have in pet shelter</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
             Type of animal: <input type="text" name="animalType"> <br /><br />
