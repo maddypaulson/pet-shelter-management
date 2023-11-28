@@ -521,7 +521,76 @@
         echo "</table>";
     
         OCICommit($db_conn);
-    }    
+    }
+    
+    function handleProjectionRequest() {
+        global $db_conn;
+    
+        // getting info which attribute checkboxes were selected when the query request is submitted
+        if (isset($_GET['projectionSubmit'])) {
+            $selectedAttributes = isset($_GET['projectionAttributes']) ? $_GET['projectionAttributes'] : array();
+        }
+
+        $query = "SELECT ";
+
+
+        if (in_array("petID", $selectedAttributes)) {
+            // petID checkbox was selected
+            $query .= implode($petID, ", ");
+        }
+        if (in_array("animalName", $selectedAttributes)) {
+            // animalName checkbox was selected
+            $query .= implode($animalName, ", ");
+        }
+        if (in_array("type", $selectedAttributes)) {
+            // type checkbox was selected
+            $query .= implode($type, ", ");
+        }
+        if (in_array("age", $selectedAttributes)) {
+            // age checkbox was selected
+            $query .= implode($age, ", ");
+        }
+        if (in_array("favouriteCaretaker", $selectedAttributes)) {
+            // favouriteCaretaker checkbox was selected
+            $query .= implode($favouriteCaretaker, ", ");
+        }
+        if (in_array("previousOwner", $selectedAttributes)) {
+            // previousOwner checkbox was selected
+            $query .= implode($previousOwner, ", ");
+        }
+        if (in_array("arrivalDate", $selectedAttributes)) {
+            // arrivalDate checkbox was selected
+            $query .= implode($arrivalDate, ", ");
+        }
+        if (in_array("adopterID", $selectedAttributes)) {
+            // adopterID checkbox was selected
+            $query .= implode($adopterID, ", ");
+        }
+    
+        $query = rtrim($query, ", ") . " FROM Animal";
+        
+        $result = executePlainSQL($query);
+
+        // still editing
+        echo "<h2>Search Results</h2>";
+        echo "<table>";
+        echo "<tr><th>Pet ID</th><th>Type</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['CARETAKERID'] . "</td>";
+            echo "<td>" . $row['CARETAKERNAME'] . "</td>";
+            echo "<td>" . $row['FUNDEVENTID'] . "</td>";
+            echo "<td>" . $row['CARETAKERADDRESS'] . "</td>";
+            echo "<td>" . $row['CARETAKERPOSTALCODE'] . "</td>";
+            echo "</tr>";
+        }
+
+        echo "</table>";
+
+        OCICommit($db_conn);
+    }
+
 
     function handleGroupByRequest(){
         global $db_conn;
@@ -564,51 +633,6 @@
         OCICommit($db_conn);
     }
     
-    function handleProjectionRequest($selectedAttributes) {
-        global $db_conn;
-    
-        $animalsAttributes = array();
-    
-        foreach ($selectedAttributes as $attribute) {
-            // sanitize user input
-            $animalAttribute = filter_var($attribute, FILTER_SANITIZE_STRING);
-            
-            // validate user input
-            if ($animalAttribute === false) {
-                echo "Error: Invalid input for". $attribute;
-                return;
-            } 
-            else {
-                $animalAttributes[] = $animalAttribute;
-            }
-        }
-    
-        $selectAttributes = implode(", ", $animalAttributes);
-        $query = "SELECT $selectAttributes FROM Animal";
-    
-        $result = executePlainSQL($query);
-    
-        echo "<h3>Selected Attributes from Animal Table</h3>";
-        echo "<table>";
-        
-        echo "<tr>";
-        foreach ($animalAttributes as $attribute) {
-            echo "<th>$attribute</th>";
-        }
-        echo "</tr>";
-    
-        foreach ($result as $row) {
-            echo "<tr>";
-            foreach ($animalAttributes as $attribute) {
-                echo "<td>" . $row[$attribute] . "</td>";
-            }
-            echo "</tr>";
-        }
-    
-        echo "</table>";
-        OCICommit($db_conn);
-    }
-
     function handleNestedAggregationRequest() {
         global $db_conn;
     

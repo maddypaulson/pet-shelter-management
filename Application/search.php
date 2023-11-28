@@ -43,7 +43,7 @@
                 <label><input type="checkbox" name="projectionAttributes[]" value="age"> Animal Age</label> <br /><br />
                 <label><input type="checkbox" name="projectionAttributes[]" value="favouriteCaretaker"> Animal's Favorite Caretaker</label> <br /><br />
                 <label><input type="checkbox" name="projectionAttributes[]" value="previousOwner"> Animal's Previous Owner</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="timeInShelter"> Time Animal Spent in Shelter</label> <br /><br />
+                <label><input type="checkbox" name="projectionAttributes[]" value="arrivalDate"> Time Animal Spent in Shelter</label> <br /><br />
                 <label><input type="checkbox" name="projectionAttributes[]" value="adopterID"> adopterId</label> <br /><br />
                 </select><br /><br />
             <!--Select Attributes: <input type="text" name="projectionAttributes"> <br /><br />-->
