@@ -16,14 +16,14 @@
         </a>
         <h2 id="projection">PROJECTION: Choose which attributes you would like to see from Animals table</h2>
         <form method="POST" action="search.php"> <!-- refresh page when submitted -->
-            <input type="checkbox" name="projectionAttributes[]" value="petID"> petID<br>
-            <input type="checkbox" name="projectionAttributes[]" value="animalName"> animalName<br>
-            <input type="checkbox" name="projectionAttributes[]" value="type"> type<br>
-            <input type="checkbox" name="projectionAttributes[]" value="age"> age<br>
-            <input type="checkbox" name="projectionAttributes[]" value="favouriteCaretaker"> Animal's Favorite Caretaker<br>
-            <input type="checkbox" name="projectionAttributes[]" value="previousOwner"> Animal's Previous Owner<br>
-            <input type="checkbox" name="projectionAttributes[]" value="arrivalDate"> Time Animal Spent in Shelter<br>
-            <input type="checkbox" name="projectionAttributes[]" value="adopterID"> adopterId<br>
+            <input type="checkbox" name="projectionAttributes[]" value="petID"> petID<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="animalName"> animalName<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="type"> type<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="age"> age<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="favouriteCaretaker"> Animal's Favorite Caretaker<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="previousOwner"> Animal's Previous Owner<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="arrivalDate"> Time Animal Spent in Shelter<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="adopterID"> Adopter ID<br><br>
             
             <input type="submit" name="projectionSubmit" value="submit">
         </form>
