@@ -571,18 +571,21 @@
         
         $result = executePlainSQL($query);
 
-        // still editing
         echo "<h2>Search Results</h2>";
         echo "<table>";
-        echo "<tr><th>Pet ID</th><th>Type</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
+        
+        $columnHeaders = !empty($selectedAttributes) ? $selectedAttributes : array("petID", "animalName", "type", "age", "favouriteCaretaker", "previousOwner", "arrivalDate", "adopterID");
+        echo "<tr>";
+        foreach ($columnHeaders as $header) {
+            echo "<th>$header</th>";
+        }
+        echo "</tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
-            echo "<td>" . $row['CARETAKERID'] . "</td>";
-            echo "<td>" . $row['CARETAKERNAME'] . "</td>";
-            echo "<td>" . $row['FUNDEVENTID'] . "</td>";
-            echo "<td>" . $row['CARETAKERADDRESS'] . "</td>";
-            echo "<td>" . $row['CARETAKERPOSTALCODE'] . "</td>";
+            foreach ($columnHeaders as $header) {
+                echo "<td>" . $row[$header] . "</td>";
+            }
             echo "</tr>";
         }
 
