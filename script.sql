@@ -191,3 +191,5 @@ INSERT INTO ItemPrice (itemID, total) VALUES (2, 100);
 INSERT INTO ItemPrice (itemID, total) VALUES (1, 150);
 INSERT INTO ItemPrice (itemID, total) VALUES (4, 75);
 INSERT INTO ItemPrice (itemID, total) VALUES (3, 90);
+
+commit;

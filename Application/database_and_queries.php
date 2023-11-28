@@ -122,7 +122,7 @@
     function handleAnimalInsertRequest() {
         global $db_conn;
     
-        /* Sanitize data using built in php functions */
+        /* Sanitize data */
         $name = filter_var($_POST['insAnimalName'], FILTER_SANITIZE_STRING);
         $type = filter_var($_POST['insAnimalType'], FILTER_SANITIZE_STRING);
         $age = ($_POST['insAge'] !== '') ? filter_var($_POST['insAge'], FILTER_VALIDATE_INT) : null;
@@ -153,7 +153,7 @@
             return;
         }
     
-        /* Check caretaker ID */
+        // Check caretaker ID
         if ($care !== null) {
             if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
                 echo "Error: Invalid caretaker ID";
@@ -161,7 +161,7 @@
             }
         }
     
-        /* Check customer ID */
+        // Check customer ID
         if ($prev_owner !== null) {
             if (!checkForeignKey($prev_owner, "customerID", "Customer")) {
                 echo "Error: Invalid customer ID";
@@ -169,7 +169,7 @@
             }
         }
     
-        /* Check adopter ID */
+        // Check adopter ID
         if ($adopter !== null) {
             if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
                 echo "Error: Invalid adopter ID";
@@ -177,7 +177,7 @@
             }
         }
     
-        /* Construct the Arrival Date in the format 'YYYY-MM-DD' */
+        // Construct the Arrival Date in the format 'YYYY-MM-DD'
         $arrivalDate = sprintf("%04d-%02d-%02d", $arrivalYear, $arrivalMonth, $arrivalDay);
 
     
@@ -210,7 +210,6 @@
             return;
         }
 
-        /* Check that petID is valid */
         if (!isPetIDValid($petID)) {
             echo "Error: Pet with ID $petID not found.";
             return;
@@ -224,12 +223,12 @@
             $tuple
         );
 
-        /* Remove from other tables first */
         executeBoundSQL("DELETE FROM PetAdopter WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Appointment WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
 
         OCICommit($db_conn);
+
     }
 
     function handleAnimalUpdateRequest() {
@@ -274,10 +273,11 @@
     }
     
     
-    /* Chec that the petID provided by the user is valid */
+    //Similar to the execute bound SQL function/
     function isPetIDValid($petID) {
         global $db_conn, $success;
     
+        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM Animal WHERE petID = :bind1";
         $binds = array(":bind1" => $petID);
     
@@ -304,16 +304,18 @@
             $success = False;
         }
     
-        /* Get the result */
+        // Fetch the result
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
-
+    
+        // Check the count from the result
         return $result['COUNT'] > 0;
     }
 
-    /* Check that a foreign key value exists in the other table */
+    //Similar to the execute bound SQL function
     function checkForeignKey($foreign_key, $attribute_name, $table) {
         global $db_conn, $success;
     
+        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM $table WHERE $attribute_name = :bind1";
         $binds = array(":bind1" => $foreign_key);
     
@@ -340,11 +342,85 @@
             $success = False;
         }
     
+        // Fetch the result
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
- 
+    
+        // Check the count from the result
         return $result['COUNT'] > 0;
     }
     
+    function handleAppointmentInsertRequest() {
+        global $db_conn;
+
+        $petID = filter_var($_POST['insAnimalName'], FILTER_VALIDATE_INT);
+        $careTakerID = filter_var($_POST['insAnimalType'], FILTER_VALIDATE_INT);
+        $customerID = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
+        $date = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
+        $time = filter_var($_POST['insPrevOwner'], FILTER_SANITIZE_STRING);
+
+        // Validate petID
+        if ($petID === false) {
+            echo "Error: Invalid input for Pet ID.";
+            return;
+        }
+    
+        // Check if the provided petID exists in the Animal table
+        if (!isPetIDValid($petID)) {
+            echo "Error: Pet with ID $petID not found.";
+            return;
+        }
+
+        if($careTakerID === false || $customerID === false || $date === false || $time === false){
+            echo "Error: Invalid input provided, please try again.";
+            return;
+        }
+
+        $tuple = array (
+            ":bind1" => $petID,
+            ":bind2" => $careTakerID,
+            ":bind3" => $customerID,
+            ":bind4" => $date,
+            ":bind5" => $time
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        executeBoundSQL("INSERT INTO Appointment (petID, caretakerID, customerID, apptDate, apptTime) VALUES (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+        OCICommit($db_conn);
+    }
+
+    function handleAppointmentDeleteRequest() {
+        global $db_conn;
+
+        $petID = filter_var($_POST['insAnimalName'], FILTER_VALIDATE_INT);
+        $careTakerID = filter_var($_POST['insAnimalType'], FILTER_VALIDATE_INT);
+        $customerID = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
+        $date = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
+        $time = filter_var($_POST['insPrevOwner'], FILTER_SANITIZE_STRING);
+
+        // Validate petID
+        if ($petID === false) {
+            echo "Error: Invalid input for Pet ID.";
+            return;
+        }
+    
+        // Check if the provided petID exists in the Animal table
+        if (!isPetIDValid($petID)) {
+            echo "Error: Pet with ID $petID not found.";
+            return;
+        }
+
+        //TO DO: VERIFY THAT THE APPOINTMENT EXISTS
+
+        executePlainSQL("DELETE FROM Appointment WHERE petID = $petID AND caretakerID = $careTakerID AND customerID = $customerID AND apptDate = $date AND apptTime = $time");
+    
+        OCICommit($db_conn);
+    
+        echo "Appointment on $date at $time for animal with ID $petID deleted successfully.";
+    }
+
     function handleSelectionRequest() {
         global $db_conn;
     
@@ -394,7 +470,6 @@
     
         $result = executePlainSQL($query);
 
-        /* Display the result of the query as a formatted table */
         echo "<h2>Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
@@ -428,10 +503,9 @@
         JOIN Donation ON Customer.customerID = Donation.customerID
         WHERE Donation.amount > $donation";
     
-        /* Execute the query without binding */
+        // Execute the query without binding
         $result = executePlainSQL($query);
     
-        /* Display the result of the query as a formatted table */
         echo "<h1>Search Results</h1>";
         echo "<h2>Customers with Donations above $donation</h2>";
         echo "<table border='1'>";
@@ -453,51 +527,56 @@
         global $db_conn;
     
         // getting info which attribute checkboxes were selected when the query request is submitted
-        $selectedAttributes = isset($_GET['projectionAttributes']) ? $_GET['projectionAttributes'] : array();
+        $selectedAttributes = isset($_POST['projectionAttributes']) ? $_POST['projectionAttributes'] : array();
+        // if (!empty($_POST["projectionAttributes"])) {
+        //     $temp = $_POST["projectionAttributes"];
+        //     echo $temp;
+        // }
+
         $query = "SELECT ";
+        // echo $query;
 
+        foreach ($selectedAttributes as $attribute) {
+            if ($attribute == "petID") {
+                $query .= "petID, "; 
+            }
+            if ($attribute == "animalName") {
+                $query .= "animalName, "; 
+            }
+            if ($attribute == "type") {
+                $query .= "type, "; 
+            }
+            if ($attribute == "age") {
+                $query .= "age, "; 
+            }
+            if ($attribute == "favouriteCaretaker") {
+                $query .= "favouriteCaretaker, "; 
+            }
+            if ($attribute == "previousOwner") {
+                $query .= "previousOwner, "; 
+            }
+            if ($attribute == "arrivalDate") {
+                $query .= "arrivalDate, "; 
+            }
+            if ($attribute == "adopterID") {
+                $query .= "adopterID, "; 
+            }
+            
+            // echo htmlspecialchars($attribute) . "<br>";
+        }
+        // echo $query;
 
-        if (in_array("petID", $selectedAttributes)) {
-            // petID checkbox was selected
-            $query .= implode($petID, ", ");
-        }
-        if (in_array("animalName", $selectedAttributes)) {
-            // animalName checkbox was selected
-            $query .= implode($animalName, ", ");
-        }
-        if (in_array("type", $selectedAttributes)) {
-            // type checkbox was selected
-            $query .= implode($type, ", ");
-        }
-        if (in_array("age", $selectedAttributes)) {
-            // age checkbox was selected
-            $query .= implode($age, ", ");
-        }
-        if (in_array("favouriteCaretaker", $selectedAttributes)) {
-            // favouriteCaretaker checkbox was selected
-            $query .= implode($favouriteCaretaker, ", ");
-        }
-        if (in_array("previousOwner", $selectedAttributes)) {
-            // previousOwner checkbox was selected
-            $query .= implode($previousOwner, ", ");
-        }
-        if (in_array("arrivalDate", $selectedAttributes)) {
-            // arrivalDate checkbox was selected
-            $query .= implode($arrivalDate, ", ");
-        }
-        if (in_array("adopterID", $selectedAttributes)) {
-            // adopterID checkbox was selected
-            $query .= implode($adopterID, ", ");
-        }
-    
         $query = rtrim($query, ", ") . " FROM Animal";
         
+        // echo $query;
+
         $result = executePlainSQL($query);
 
         echo "<h2>Search Results</h2>";
         echo "<table>";
         
         $columnHeaders = !empty($selectedAttributes) ? $selectedAttributes : array("petID", "animalName", "type", "age", "favouriteCaretaker", "previousOwner", "arrivalDate", "adopterID");
+        
         echo "<tr>";
         foreach ($columnHeaders as $header) {
             echo "<th>$header</th>";
@@ -505,9 +584,10 @@
         echo "</tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            // echo $row;
             echo "<tr>";
-            foreach ($columnHeaders as $header) {
-                echo "<td>" . $row[$header] . "</td>";
+            foreach ($row as $element) {
+                echo "<td>" . $element . "</td>";
             }
             echo "</tr>";
         }
@@ -523,28 +603,31 @@
 
         $animal_type = ($_GET['animalType'] !== '') ? "'" . filter_var($_GET['animalType'], FILTER_SANITIZE_STRING) . "'" : null;
 
-        if ($type === false || $type === null) {
+        if ($type === false) {
             echo "Error: Invalid animal type";
             return;
         }
     
         $query = "SELECT type, COUNT(*) as typeCount 
                 FROM Animal 
-                WHERE type = :animal_type
+                WHERE type = $animal_type
                 GROUP BY type"; 
 
-    
+        // echo $query;
+
         $result = executePlainSQL($query);
 
         echo "<h2> Search Results</h2>";
         echo "<table>";
-        echo "<tr><th>Animal Type</th><th>Count</th></tr>";
+        echo "<tr><th>Animal Type</th><th>TypeCount</th></tr>";
 
         while($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
-            echo "<tr>";
-            echo "<td>" . $row['TYPE'] . "</td>";
-            echo "<td>" . $row['TYPECOUNT'] . "</td>";
-            echo "</tr>";
+            foreach($row as $element) {
+                // echo "<tr>";
+                echo "<td>" . $element . "</td>";
+                // echo "<td>" . $element['TYPECOUNT'] . "</td>";
+                // echo "</tr>";
+            }
         }
 
         echo "</table>";
@@ -565,7 +648,7 @@
         $query = "SELECT FundraiserEvent.eventType, AVG(FundraiserEvent.donationGoal) AS avgDonationGoal 
         FROM FundraiserEvent
         GROUP BY eventType
-        HAVING AVG(FundraiserEvent.donationGoal) >= :donation";
+        HAVING AVG(FundraiserEvent.donationGoal) >= $donation";
 
         $result = executePlainSQL($query);
     
@@ -575,9 +658,16 @@
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
+            foreach($row as $element) {
+                echo "<td>" . $element . "</td>";
+            }
+            echo "</tr>";
+
+            /*echo "<tr>";
             echo "<td>" . $row['EVENTTYPE'] . "</td>";
             echo "<td>" . $row['AVGDONATIONGOAL'] . "</td>";
-            echo "</tr>";
+            echo "</tr>";*/
+
         }
         echo "</table>";
 
@@ -587,11 +677,11 @@
     function handleDivisionRequest() {
         global $db_conn;
     
-        $query = "SELECT DISTINCT a.adopterID, a.adopterName
+        $query = "SELECT DISTINCT a.adopterID
         FROM Adopter a
         WHERE NOT EXISTS ( 
             SELECT t.type
-            FROM AnimalType t
+            FROM Animal t
             WHERE NOT EXISTS (
                 SELECT aa.animalID
                 FROM AnimalAdoption aa
@@ -605,8 +695,9 @@
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
-            echo "<td>" . $row['ADOPTERID'] . "</td>";
-            echo "<td>" . $row['ADOPTERNAME'] . "</td>";
+            foreach($row as $element) {
+                echo "<td>" . $element . "</td>";
+            }
             echo "</tr>";
         }
     
@@ -626,7 +717,13 @@
                 handleAnimalDeleteRequest();
             } else if (array_key_exists('updateAnimalSubmit', $_POST)) {
                 handleAnimalUpdateRequest();
-            }
+            } else if (array_key_exists('insertApptQueryRequest', $_POST)) {
+                handleAppointmentInsertRequest();
+            } else if (array_key_exists('deleteApptQueryRequest', $_POST)) {
+                handleAppointmentDeleteRequest();
+            } else if (array_key_exists('projectionSubmit', $_POST)) {
+                handleProjectionRequest();
+            } 
             disconnectFromDB();
         }
     }
@@ -635,12 +732,12 @@
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handleGETRequest() {
         if (connectToDB()) {
-            if (array_key_exists('selectionSubmit', $_GET)) {
+            if (array_key_exists('countTuples', $_GET)) {
+                handleCountRequest();
+            } else if (array_key_exists('selectionSubmit', $_GET)) {
                 handleSelectionRequest();
             } else if (array_key_exists('donationSubmit', $_GET)) {
                 handleJoinRequest();
-            } else if (array_key_exists('projectionSubmit', $_GET)) {
-                handleProjectionRequest();
             } else if (array_key_exists('groupBySubmit', $_GET)) {
                 handleGroupByRequest();
             } else if (array_key_exists('havingSubmit', $_GET)) {
