@@ -223,8 +223,6 @@
             $tuple
         );
 
-        //executeBoundSQL("DELETE FROM PetAdopter WHERE petID = :bind1", $alltuples);
-        //executeBoundSQL("DELETE FROM Appointment WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
 
         OCICommit($db_conn);
