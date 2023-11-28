@@ -563,7 +563,7 @@
         OCICommit($db_conn);
     }
     
-    function handleNestedAggregationRequest() {
+    function handleAggregationHavingRequest() {
         global $db_conn;
     
         $donation = ($_GET['havingAvgDonationGoalThreshold'] !== '') ? filter_var($_GET['havingAvgDonationGoalThreshold'], FILTER_VALIDATE_INT) : null;
@@ -663,7 +663,7 @@
             } else if (array_key_exists('groupBySubmit', $_GET)) {
                 handleGroupByRequest();
             } else if (array_key_exists('havingSubmit', $_GET)) {
-                handleNestedAggregationRequest();
+                handleAggregationHavingRequest();
             } else if (array_key_exists('divisionSubmit', $_GET)) {
                 handleDivisionRequest();
             } 
