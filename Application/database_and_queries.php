@@ -694,7 +694,6 @@
         echo "</table>";
     
         OCICommit($db_conn);
-        }
     }
     
     
