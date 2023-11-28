@@ -726,7 +726,15 @@
                 handleSelectionRequest();
             } else if (array_key_exists('donationSubmit', $_GET)) {
                 handleJoinRequest();
-            }
+            } else if (array_key_exists('projectionSubmit', $_GET)) {
+                handleProjectionRequest();
+            } else if (array_key_exists('groupBySubmit', $_GET)) {
+                handleGroupByRequest();
+            } else if (array_key_exists('havingSubmit', $_GET)) {
+                handleNestedAggregationRequest();
+            } else if (array_key_exists('divisionSubmit', $_GET)) {
+                handleDivisionRequest();
+            } 
 
             disconnectFromDB();
         }
