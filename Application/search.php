@@ -14,25 +14,6 @@
         <a href="home-page.php">
             <button class="return-home">Return to Home Page</button>
         </a>
-        <h2 id="selection">SELECTION: Find a Caretaker</h2>
-        <form method="GET" action="search.php">
-            <input type="hidden" id="selectionQueryRequest" name="selectionQueryRequest">
-            Caretaker ID: <input type="text" name="selectionCareID"> <br /><br />
-            Caretaker Name: <input type="text" name="selectionName"> <br /><br />
-            Fundraiser Event ID: <input type="text" name="selectionFundEvent"> <br /><br />
-            Caretaker Address: <input type="text" name="selectionAddress"> <br /><br />
-            Caretaker Postal Code: <input type="text" name="selectionPostal"> <br /><br />
-
-            <input type="submit" name="selectionSubmit"></p>
-        </form>
-
-        <h2 id="join">JOIN: Find customers who made donations above a certain amount</h2>
-        <form method="GET" action="search.php">
-            <input type="hidden" id="donationQueryRequest" name="donationQueryRequest">
-            Donation Amount: <input type="text" name="donationAmount"> <br /><br />
-            <input type="submit" name="donationSubmit"></p>
-        </form> 
-
         <h2 id="projection">PROJECTION: Choose which attributes you would like to see from Animals table</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="projectionQueryRequest" name="projectionQueryRequest">
@@ -48,6 +29,12 @@
                 </select><br /><br />
             <!--Select Attributes: <input type="text" name="projectionAttributes"> <br /><br />-->
             <input type="submit" name="projectionSubmit">
+        </form>
+        <h2 id="groupBy">GROUP BY: Count how many animals of specific type we have in pet shelter</h2>
+        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
+            Type of animal: <input type="text" name="animalType"> <br /><br />
+            <input type="submit" name="groupBySubmit">
         </form>
 	</body>
     <!-- call GET or POST function -->

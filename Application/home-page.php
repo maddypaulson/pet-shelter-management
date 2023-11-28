@@ -32,30 +32,26 @@
         <div class="card">
             <div class="circle-icon-container">
                 <div class="circle-icon icon2"></div>
-                <h2>Appointments</h2>
+                <h2>Seek</h2>
             </div>
-            <a href="appointments.php#create">
-                <button class="add-animal-btn">Create a new appointment</button>
+            <a href="seek.php#selection">
+                <button class="add-animal-btn">Selection Query</button>
+            </a>
+            <a href="seek.php#join">
+                <button class="add-animal-btn">Join Query</button>
             </a>
 
-            <a href="appointments.php#remove">
-                <button class="add-animal-btn">Remove an existing appointment</button>
-            </a>
         </div>
         <div class="card">
             <div class="circle-icon-container">
                 <div class="circle-icon icon3"></div>
                 <h2>Search</h2>
             </div>
-            <a href="search.php#selection">
-                <button class="add-animal-btn">Selection Query</button>
-            </a>
-            <a href="search.php#join">
-                <button class="add-animal-btn">Join Query</button>
-            </a>
-
             <a href="search.php#projection">
                 <button class="add-animal-btn">Projection Query</button>
+            </a>
+            <a href="explore.php#groupBy">
+                <button class="add-animal-btn">Group By Query</button>
             </a>
         </div>
         <div class="card">
@@ -63,9 +59,6 @@
                 <div class="circle-icon icon4"></div>
                 <h2>Explore</h2>
             </div>
-            <a href="explore.php#groupBy">
-                <button class="add-animal-btn">Group By Query</button>
-            </a>
             <a href="explore.php#having">
                 <button class="add-animal-btn">Having Query</button>
             </a>

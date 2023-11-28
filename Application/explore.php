@@ -14,21 +14,16 @@
         <a href="home-page.php">
             <button class="return-home">Return to Home Page</button>
         </a>
-        <h2 id="groupBy">GROUP BY: Count how many animals of specific type we have in pet shelter</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
-            <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
-            Type of animal: <input type="text" name="animalType"> <br /><br />
-            <input type="submit" name="groupBySubmit">
-        </form>
+
         <h2 id="having">Aggregation with HAVING: Find fundraiser event types with specified average donation goal or above</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+        <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="havingQueryRequest" name="havingQueryRequest">
             Average Donation Goal Value: <input type="text" name="havingAvgDonationGoalThreshold"> <br /><br />
             <input type="submit" name="havingSubmit">
         </form>
 
         <h2 id="division">DIVISION: Find adopters who adopted all types of animals</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
+        <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="divisionQueryRequest" name="divisionQueryRequest">
             <input type="submit" name="divisionSubmit">
         </form>
