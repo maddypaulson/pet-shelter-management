@@ -694,7 +694,6 @@
         echo "</table>";
     
         OCICommit($db_conn);
-        }
     }
     
     
@@ -723,6 +722,10 @@
         if (connectToDB()) {
             if (array_key_exists('countTuples', $_GET)) {
                 handleCountRequest();
+            } else if (array_key_exists('selectionSubmit', $_GET)) {
+                handleSelectionRequest();
+            } else if (array_key_exists('donationSubmit', $_GET)) {
+                handleJoinRequest();
             }
 
             disconnectFromDB();
