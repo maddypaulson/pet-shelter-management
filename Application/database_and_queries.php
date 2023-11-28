@@ -597,21 +597,14 @@
 
         $animal_type = ($_GET['animalType'] !== '') ? "'" . filter_var($_GET['animalType'], FILTER_SANITIZE_STRING) . "'" : null;
 
-        if ($type === false) {
+        if ($type === false || $type === null) {
             echo "Error: Invalid animal type";
             return;
-        }
-
-        $query = "SELECT type, COUNT(*) as typeCount FROM Animal WHERE ";
-    
-        if ($type !== null) {
-            $where_condition = "type = $animal_type";
-            $groupby_condition = "$animal_type";
         }
     
         $query = "SELECT type, COUNT(*) as typeCount 
                 FROM Animal 
-                WHERE type = $animal_type
+                WHERE type = :animal_type
                 GROUP BY type"; 
 
     
@@ -726,7 +719,15 @@
                 handleSelectionRequest();
             } else if (array_key_exists('donationSubmit', $_GET)) {
                 handleJoinRequest();
-            }
+            } else if (array_key_exists('projectionSubmit', $_GET)) {
+                handleProjectionRequest();
+            } else if (array_key_exists('groupBySubmit', $_GET)) {
+                handleGroupByRequest();
+            } else if (array_key_exists('havingSubmit', $_GET)) {
+                handleNestedAggregationRequest();
+            } else if (array_key_exists('divisionSubmit', $_GET)) {
+                handleDivisionRequest();
+            } 
 
             disconnectFromDB();
         }
