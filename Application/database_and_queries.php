@@ -611,7 +611,7 @@
     
         $query = "SELECT type, COUNT(*) as typeCount 
                 FROM Animal 
-                WHERE type = $animal_type
+                WHERE type = :animal_type
                 GROUP BY type"; 
 
     
