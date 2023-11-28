@@ -597,16 +597,9 @@
 
         $animal_type = ($_GET['animalType'] !== '') ? "'" . filter_var($_GET['animalType'], FILTER_SANITIZE_STRING) . "'" : null;
 
-        if ($type === false) {
+        if ($type === false || $type === null) {
             echo "Error: Invalid animal type";
             return;
-        }
-
-        $query = "SELECT type, COUNT(*) as typeCount FROM Animal WHERE ";
-    
-        if ($type !== null) {
-            $where_condition = "type = $animal_type";
-            $groupby_condition = "$animal_type";
         }
     
         $query = "SELECT type, COUNT(*) as typeCount 
