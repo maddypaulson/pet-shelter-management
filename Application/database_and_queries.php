@@ -665,9 +665,39 @@
         OCICommit($db_conn);
     }
     
+    function handleDivisionRequest() {
+        global $db_conn;
+    
+        $query = "SELECT DISTINCT a.adopterID, a.adopterName
+        FROM Adopter a
+        WHERE NOT EXISTS ( 
+            SELECT t.type
+            FROM AnimalType t
+            WHERE NOT EXISTS (
+                SELECT aa.animalID
+                FROM AnimalAdoption aa
+                WHERE aa.adopterID = a.adopterID AND aa.type = t.type))";
+    
+        $result = executePlainSQL($query);
+    
+        echo "<h2>Search Results</h2>";
+        echo "<table>";
+        echo "<tr><th>Adopter ID</th><th>Adopter Name</th></tr>";
+    
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['ADOPTERID'] . "</td>";
+            echo "<td>" . $row['ADOPTERNAME'] . "</td>";
+            echo "</tr>";
+        }
+    
+        echo "</table>";
+    
+        OCICommit($db_conn);
+        }
+    }
     
     
-
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handlePOSTRequest() {
