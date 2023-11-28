@@ -122,7 +122,7 @@
     function handleAnimalInsertRequest() {
         global $db_conn;
     
-        /* Sanitize data */
+        /* Sanitize data using built in php functions */
         $name = filter_var($_POST['insAnimalName'], FILTER_SANITIZE_STRING);
         $type = filter_var($_POST['insAnimalType'], FILTER_SANITIZE_STRING);
         $age = ($_POST['insAge'] !== '') ? filter_var($_POST['insAge'], FILTER_VALIDATE_INT) : null;
@@ -153,7 +153,7 @@
             return;
         }
     
-        // Check caretaker ID
+        /* Check caretaker ID */
         if ($care !== null) {
             if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
                 echo "Error: Invalid caretaker ID";
@@ -161,7 +161,7 @@
             }
         }
     
-        // Check customer ID
+        /* Check customer ID */
         if ($prev_owner !== null) {
             if (!checkForeignKey($prev_owner, "customerID", "Customer")) {
                 echo "Error: Invalid customer ID";
@@ -169,7 +169,7 @@
             }
         }
     
-        // Check adopter ID
+        /* Check adopter ID */
         if ($adopter !== null) {
             if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
                 echo "Error: Invalid adopter ID";
@@ -177,7 +177,7 @@
             }
         }
     
-        // Construct the Arrival Date in the format 'YYYY-MM-DD'
+        /* Construct the Arrival Date in the format 'YYYY-MM-DD' */
         $arrivalDate = sprintf("%04d-%02d-%02d", $arrivalYear, $arrivalMonth, $arrivalDay);
 
     
@@ -210,6 +210,7 @@
             return;
         }
 
+        /* Check that petID is valid */
         if (!isPetIDValid($petID)) {
             echo "Error: Pet with ID $petID not found.";
             return;
@@ -223,12 +224,12 @@
             $tuple
         );
 
+        /* Remove from other tables first */
         executeBoundSQL("DELETE FROM PetAdopter WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Appointment WHERE petID = :bind1", $alltuples);
         executeBoundSQL("DELETE FROM Animal WHERE petID = :bind1", $alltuples);
 
         OCICommit($db_conn);
-
     }
 
     function handleAnimalUpdateRequest() {
@@ -273,11 +274,10 @@
     }
     
     
-    //Similar to the execute bound SQL function/
+    /* Chec that the petID provided by the user is valid */
     function isPetIDValid($petID) {
         global $db_conn, $success;
     
-        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM Animal WHERE petID = :bind1";
         $binds = array(":bind1" => $petID);
     
@@ -304,18 +304,16 @@
             $success = False;
         }
     
-        // Fetch the result
+        /* Get the result */
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
-    
-        // Check the count from the result
+
         return $result['COUNT'] > 0;
     }
 
-    //Similar to the execute bound SQL function
+    /* Check that a foreign key value exists in the other table */
     function checkForeignKey($foreign_key, $attribute_name, $table) {
         global $db_conn, $success;
     
-        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM $table WHERE $attribute_name = :bind1";
         $binds = array(":bind1" => $foreign_key);
     
@@ -342,85 +340,11 @@
             $success = False;
         }
     
-        // Fetch the result
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
-    
-        // Check the count from the result
+ 
         return $result['COUNT'] > 0;
     }
     
-    function handleAppointmentInsertRequest() {
-        global $db_conn;
-
-        $petID = filter_var($_POST['insAnimalName'], FILTER_VALIDATE_INT);
-        $careTakerID = filter_var($_POST['insAnimalType'], FILTER_VALIDATE_INT);
-        $customerID = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
-        $date = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
-        $time = filter_var($_POST['insPrevOwner'], FILTER_SANITIZE_STRING);
-
-        // Validate petID
-        if ($petID === false) {
-            echo "Error: Invalid input for Pet ID.";
-            return;
-        }
-    
-        // Check if the provided petID exists in the Animal table
-        if (!isPetIDValid($petID)) {
-            echo "Error: Pet with ID $petID not found.";
-            return;
-        }
-
-        if($careTakerID === false || $customerID === false || $date === false || $time === false){
-            echo "Error: Invalid input provided, please try again.";
-            return;
-        }
-
-        $tuple = array (
-            ":bind1" => $petID,
-            ":bind2" => $careTakerID,
-            ":bind3" => $customerID,
-            ":bind4" => $date,
-            ":bind5" => $time
-        );
-
-        $alltuples = array (
-            $tuple
-        );
-
-        executeBoundSQL("INSERT INTO Appointment (petID, caretakerID, customerID, apptDate, apptTime) VALUES (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
-        OCICommit($db_conn);
-    }
-
-    function handleAppointmentDeleteRequest() {
-        global $db_conn;
-
-        $petID = filter_var($_POST['insAnimalName'], FILTER_VALIDATE_INT);
-        $careTakerID = filter_var($_POST['insAnimalType'], FILTER_VALIDATE_INT);
-        $customerID = filter_var($_POST['insAge'], FILTER_VALIDATE_INT);
-        $date = filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING);
-        $time = filter_var($_POST['insPrevOwner'], FILTER_SANITIZE_STRING);
-
-        // Validate petID
-        if ($petID === false) {
-            echo "Error: Invalid input for Pet ID.";
-            return;
-        }
-    
-        // Check if the provided petID exists in the Animal table
-        if (!isPetIDValid($petID)) {
-            echo "Error: Pet with ID $petID not found.";
-            return;
-        }
-
-        //TO DO: VERIFY THAT THE APPOINTMENT EXISTS
-
-        executePlainSQL("DELETE FROM Appointment WHERE petID = $petID AND caretakerID = $careTakerID AND customerID = $customerID AND apptDate = $date AND apptTime = $time");
-    
-        OCICommit($db_conn);
-    
-        echo "Appointment on $date at $time for animal with ID $petID deleted successfully.";
-    }
-
     function handleSelectionRequest() {
         global $db_conn;
     
@@ -470,6 +394,7 @@
     
         $result = executePlainSQL($query);
 
+        /* Display the result of the query as a formatted table */
         echo "<h2>Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
@@ -503,9 +428,10 @@
         JOIN Donation ON Customer.customerID = Donation.customerID
         WHERE Donation.amount > $donation";
     
-        // Execute the query without binding
+        /* Execute the query without binding */
         $result = executePlainSQL($query);
     
+        /* Display the result of the query as a formatted table */
         echo "<h1>Search Results</h1>";
         echo "<h2>Customers with Donations above $donation</h2>";
         echo "<table border='1'>";
@@ -700,10 +626,6 @@
                 handleAnimalDeleteRequest();
             } else if (array_key_exists('updateAnimalSubmit', $_POST)) {
                 handleAnimalUpdateRequest();
-            } else if (array_key_exists('insertApptQueryRequest', $_POST)) {
-                handleAppointmentInsertRequest();
-            } else if (array_key_exists('deleteApptQueryRequest', $_POST)) {
-                handleAppointmentDeleteRequest();
             }
             disconnectFromDB();
         }
@@ -713,9 +635,7 @@
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handleGETRequest() {
         if (connectToDB()) {
-            if (array_key_exists('countTuples', $_GET)) {
-                handleCountRequest();
-            } else if (array_key_exists('selectionSubmit', $_GET)) {
+            if (array_key_exists('selectionSubmit', $_GET)) {
                 handleSelectionRequest();
             } else if (array_key_exists('donationSubmit', $_GET)) {
                 handleJoinRequest();
