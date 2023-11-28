@@ -153,7 +153,7 @@
             return;
         }
     
-        // Check caretaker ID
+        /* Check caretaker ID */
         if ($care !== null) {
             if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
                 echo "Error: Invalid caretaker ID";
@@ -161,7 +161,7 @@
             }
         }
     
-        // Check customer ID
+        /* Check customer ID */
         if ($prev_owner !== null) {
             if (!checkForeignKey($prev_owner, "customerID", "Customer")) {
                 echo "Error: Invalid customer ID";
@@ -169,7 +169,7 @@
             }
         }
     
-        // Check adopter ID
+        /* Check adopter ID */
         if ($adopter !== null) {
             if (!checkForeignKey($adopter, "adopterID", "Adopter")) {
                 echo "Error: Invalid adopter ID";
@@ -177,10 +177,9 @@
             }
         }
     
-        // Construct the Arrival Date in the format 'YYYY-MM-DD'
+        /* Construct the Arrival Date in the format 'YYYY-MM-DD' */
         $arrivalDate = sprintf("%04d-%02d-%02d", $arrivalYear, $arrivalMonth, $arrivalDay);
 
-    
         $tuple = array(
             ":bind1" => $name,
             ":bind2" => $type,
@@ -199,7 +198,6 @@
         OCICommit($db_conn);
     }
     
-
     function handleAnimalDeleteRequest() {
         global $db_conn;
 
@@ -237,11 +235,21 @@
         $care = ($_POST['upFavCare'] !== '') ? filter_var($_POST['upFavCare'], FILTER_SANITIZE_STRING) : null;
         $adopter = ($_POST['upAdopterID'] !== '') ? filter_var($_POST['upAdopterID'], FILTER_VALIDATE_INT) : null;
 
-        if($petID === false){
+        if ($petID === false){
             echo "Error: Invalid input for Pet ID.";
+            return;
+        } else if ($age === false || $age < 0) {
+            echo "Error: Invalid input for age.";
+            return;
+        } else if ($care === false) {
+            echo "Error: Invalid input for age.";
+            return;
+        } else if ($adopter === false) {
+            echo "Error: Invalid input for age.";
             return;
         }
 
+        /* Check that the petID provided by the user is valid */
         if (!isPetIDValid($petID)) {
             echo "Error: Pet with ID $petID not found.";
             return;
@@ -270,12 +278,10 @@
         OCICommit($db_conn);
     }
     
-    
-    //Similar to the execute bound SQL function/
+    /* Check that the petID provided by the user is valid */
     function isPetIDValid($petID) {
         global $db_conn, $success;
     
-        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM Animal WHERE petID = :bind1";
         $binds = array(":bind1" => $petID);
     
@@ -302,18 +308,15 @@
             $success = False;
         }
     
-        // Fetch the result
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
-    
-        // Check the count from the result
+
         return $result['COUNT'] > 0;
     }
 
-    //Similar to the execute bound SQL function
+    /* Check that a foreign key value exists in the other table */
     function checkForeignKey($foreign_key, $attribute_name, $table) {
         global $db_conn, $success;
     
-        // Use prepared statement to prevent SQL injection
         $query = "SELECT COUNT(*) AS count FROM $table WHERE $attribute_name = :bind1";
         $binds = array(":bind1" => $foreign_key);
     
@@ -339,11 +342,9 @@
             echo "<br>";
             $success = False;
         }
-    
-        // Fetch the result
+ 
         $result = OCI_Fetch_Array($statement, OCI_ASSOC);
     
-        // Check the count from the result
         return $result['COUNT'] > 0;
     }
     
@@ -396,6 +397,7 @@
     
         $result = executePlainSQL($query);
 
+        /* Display the result of the query as a formatted table */
         echo "<h2>Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
@@ -429,9 +431,9 @@
         JOIN Donation ON Customer.customerID = Donation.customerID
         WHERE Donation.amount > $donation";
     
-        // Execute the query without binding
         $result = executePlainSQL($query);
-    
+
+        /* Display the result of the query as a formatted table */
         echo "<h1>Search Results</h1>";
         echo "<h2>Customers with Donations above $donation</h2>";
         echo "<table border='1'>";
