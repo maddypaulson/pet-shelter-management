@@ -527,10 +527,7 @@
         global $db_conn;
     
         // getting info which attribute checkboxes were selected when the query request is submitted
-        if (isset($_GET['projectionSubmit'])) {
-            $selectedAttributes = isset($_GET['projectionAttributes']) ? $_GET['projectionAttributes'] : array();
-        }
-
+        $selectedAttributes = isset($_GET['projectionAttributes']) ? $_GET['projectionAttributes'] : array();
         $query = "SELECT ";
 
 
@@ -639,25 +636,32 @@
     function handleNestedAggregationRequest() {
         global $db_conn;
     
-        $query = "SELECT caretakerID, AVG(numOfAdoptions) as avgAdoptionRate
-                  FROM (
-                      SELECT caretakerID, COUNT(*) as numOfAdoptions
-                      FROM AdoptionDetails
-                      GROUP BY caretakerID
-                  )
-                  GROUP BY caretakerID";
-    
-        $result = executePlainSQL($query);
-    
-        echo "<h3>Average Adoption Rate Per Caretaker</h3>";
-        echo "<table>";
-        echo "<tr><th>Caretaker ID</th><th>Average Adoption Rate</th></tr>";
-    
-        foreach ($result as $row) {
-            echo "<tr><td>" . $row["CARETAKERID"] . "</td><td>" . $row["AVGADOPTIONRATE"] . "</td></tr>";
+        $donation = ($_GET['havingAvgDonationGoalThreshold'] !== '') ? filter_var($_GET['havingAvgDonationGoalThreshold'], FILTER_VALIDATE_INT) : null;
+
+        if($donation === false){
+            echo "Error: Average Donation Amount must be an integer value.";
+            return;
         }
     
+        $query = "SELECT FundraiserEvent.eventType, AVG(FundraiserEvent.donationGoal) AS avgDonationGoal 
+        FROM FundraiserEvent
+        GROUP BY eventType
+        HAVING AVG(FundraiserEvent.donationGoal) >= :donation";
+
+        $result = executePlainSQL($query);
+    
+        echo "<h2>Search Results</h2>";
+        echo "<table>";
+        echo "<tr><th>Event Type</th><th>Average Donation Amount</th></tr>";
+    
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['EVENTTYPE'] . "</td>";
+            echo "<td>" . $row['AVGDONATIONGOAL'] . "</td>";
+            echo "</tr>";
+        }
         echo "</table>";
+
         OCICommit($db_conn);
     }
     
