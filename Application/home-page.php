@@ -62,7 +62,7 @@
             <a href="search.php#projection">
                 <button class="add-animal-btn">Projection Query</button>
             </a>
-            <a href="explore.php#groupBy">
+            <a href="search.php#groupBy">
                 <button class="add-animal-btn">Group By Query</button>
             </a>
         </div>

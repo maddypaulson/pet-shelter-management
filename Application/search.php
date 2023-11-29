@@ -15,22 +15,19 @@
             <button class="return-home">Return to Home Page</button>
         </a>
         <h2 id="projection">PROJECTION: Choose which attributes you would like to see from Animals table</h2>
-        <form method="GET" action="search.php"> <!-- refresh page when submitted -->
-            <input type="hidden" id="projectionQueryRequest" name="projectionQueryRequest">
-            Attributes you want to see: <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="petID"> petID</label><br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="animalName"> Animal Name</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="type"> Animal Type</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="age"> Animal Age</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="favouriteCaretaker"> Animal's Favorite Caretaker</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="previousOwner"> Animal's Previous Owner</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="arrivalDate"> Time Animal Spent in Shelter</label> <br /><br />
-                <label><input type="checkbox" name="projectionAttributes[]" value="adopterID"> adopterId</label> <br /><br />
-                </select><br /><br />
-            <!--Select Attributes: <input type="text" name="projectionAttributes"> <br /><br />-->
-            <input type="submit" name="projectionSubmit">
+        <form method="POST" action="search.php"> <!-- refresh page when submitted -->
+            <input type="checkbox" name="projectionAttributes[]" value="petID"> petID<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="animalName"> animalName<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="type"> type<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="age"> age<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="favouriteCaretaker"> Animal's Favorite Caretaker<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="previousOwner"> Animal's Previous Owner<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="arrivalDate"> Time Animal Spent in Shelter<br><br>
+            <input type="checkbox" name="projectionAttributes[]" value="adopterID"> Adopter ID<br><br>
+            
+            <input type="submit" name="projectionSubmit" value="submit">
         </form>
-        <h2 id="groupBy">GROUP BY: Count how many animals of specific type we have in pet shelter</h2>
+        <h2 id="groupBy">Aggregation with GROUP BY: Count how many animals of specific type we have in pet shelter</h2>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
             Type of animal: <input type="text" name="animalType"> <br /><br />
