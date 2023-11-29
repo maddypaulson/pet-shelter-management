@@ -601,30 +601,67 @@
 
         OCICommit($db_conn);
     }
+
+    function handleNestedGroupByRequest() {
+        global $db_conn;
+
+        $min_quantity = ($_GET['nestedAvgQuantity'] !== '') ? filter_var($_GET['nestedAvgQuantity'], FILTER_VALIDATE_INT) : null;
+    
+        $query = "SELECT c.customerID, c.customerName
+        FROM Customer c
+        WHERE c.customerID IN (
+            SELECT ip.customerID
+            FROM ItemPurchase ip
+            JOIN Item i ON ip.itemID = i.itemID
+            GROUP BY ip.customerID
+            HAVING AVG(i.quantity) > $min_quantity)";
+
+    
+        $result = executePlainSQL($query);
+    
+        echo "<h2>Search Results</h2>";
+        echo "<table>";
+        echo "<tr><th>Customer ID</th><th>Customer Name</th></tr>";
+    
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            foreach($row as $element) {
+                echo "<td>" . $element . "</td>";
+            }
+            echo "</tr>";
+        }
+    
+        echo "</table>";
+    
+        OCICommit($db_conn);
+    }
     
     function handleDivisionRequest() {
         global $db_conn;
     
         $query = "SELECT AC.caretakerID, AC.caretakerName
         FROM AnimalCaretaker AC
-        WHERE NOT EXISTS (
-            SELECT DISTINCT type
-            FROM Animal A
-            WHERE type IN ('Cat', 'Dog', 'Bunny', 'Hamster')
-            AND NOT EXISTS (
-                SELECT type
-                FROM Animal AA
-                WHERE AA.favouriteCaretaker = AA.caretakerID
-                AND A2.type = A.type))";
+        WHERE (
+            SELECT COUNT(DISTINCT T.type)
+            FROM Animal T
+            WHERE T.petID IN (
+                SELECT AD.petID
+                FROM AdoptionDetails AD
+                WHERE AD.caretakerID = AC.caretakerID
+            )
+        ) = (SELECT COUNT(DISTINCT type) FROM Animal)";
 
 
         $result = executePlainSQL($query);
-    
+
         echo "<h2>Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th></tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            // echo "im in while";
+            // echo $row;
+
             echo "<tr>";
             foreach($row as $element) {
                 echo "<td>" . $element . "</td>";
@@ -669,7 +706,7 @@
                 handleAnimalUpdateRequest();
             } else if (array_key_exists('resetTablesRequest', $_POST)) {
 	        handleResetRequest();
-	    } else if (array_key_exists('projectionSubmit', $_POST)) {
+	        } else if (array_key_exists('projectionSubmit', $_POST)) {
                 handleProjectionRequest();
             } 
             disconnectFromDB();
@@ -688,6 +725,8 @@
                 handleGroupByRequest();
             } else if (array_key_exists('havingSubmit', $_GET)) {
                 handleAggregationHavingRequest();
+            } else if (array_key_exists('nestedSubmit', $_GET)) {
+                handleNestedGroupByRequest();
             } else if (array_key_exists('divisionSubmit', $_GET)) {
                 handleDivisionRequest();
             } 

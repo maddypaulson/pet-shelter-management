@@ -131,16 +131,14 @@ INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes)
 INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (3, 3, 3, to_date('2023/10/22', 'YYYY/MM/DD'), 'loud cat');
 INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (4, 4, 2, to_date('2023/10/23', 'YYYY/MM/DD'), 'really soft bunny'); 
 INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (5, 5, 5, to_date('2023/10/24', 'YYYY/MM/DD'), 'quiet dog');
---error
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (6, 6, 2, to_date('2023/10/25', 'YYYY/MM/DD'), 'interesting hamster');
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (6, 5, 2, to_date('2023/10/25', 'YYYY/MM/DD'), 'interesting hamster');
 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (1, 1);
 INSERT INTO PetAdopter (petID, adopterID) VALUES (2, 2); 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (3, 3); 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (4, 4); 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (5, 5);
---error
-INSERT INTO PetAdopter (petID, adopterID) VALUES (6, 6);
+INSERT INTO PetAdopter (petID, adopterID) VALUES (6, 5);
 
 INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (6, 2, 1, to_date('2023/01/15 10:00', 'YYYY/MM/DD HH24:MI'));
 INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (7, 2, 2, to_date('2023/02/20 14:30', 'YYYY/MM/DD HH24:MI'));
@@ -195,3 +193,5 @@ INSERT INTO ItemPrice (itemID, total) VALUES (2, 100);
 INSERT INTO ItemPrice (itemID, total) VALUES (1, 150);
 INSERT INTO ItemPrice (itemID, total) VALUES (4, 75);
 INSERT INTO ItemPrice (itemID, total) VALUES (3, 90);
+
+commit;
