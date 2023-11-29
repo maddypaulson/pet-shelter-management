@@ -16,7 +16,7 @@
 <h3 style="text-align:center"> If this is your first time running this application, please hit Reset!</h3>
 <form method="POST" action="home-page.php">
 	<button class="reset-btn">	
-	<input type="hidden" id="resetTablesRequest" name="ResetTablesRequest">
+	<input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
 	 Reset 
 	</button>
 </form>

@@ -102,11 +102,11 @@ INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, ar
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Cloudy', 'Bunny', 3, 2, NULL, to_date('2023/11/11', 'YYYY/MM/DD'), NULL);
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Smoothie', 'Bunny', 3, 2, NULL, to_date('2023/10/31', 'YYYY/MM/DD'), NULL);
 
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023-10-20', 'YYYY/MM/DD'), 1, 'Checkup', 1);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023-10-21', 'YYYY/MM/DD'), 2, 'Vaccination', 2);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023-10-22', 'YYYY/MM/DD'), 3, 'Dental cleaning', 3);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023-10-23', 'YYYY/MM/DD'), 4, 'Spaying', 4);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023-10-24', 'YYYY/MM/DD'), 5, 'Checkup', 5);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/20', 'YYYY/MM/DD'), 1, 'Checkup', 1);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/21', 'YYYY/MM/DD'), 2, 'Vaccination', 2);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/22', 'YYYY/MM/DD'), 3, 'Dental cleaning', 3);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/23', 'YYYY/MM/DD'), 4, 'Spaying', 4);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/24', 'YYYY/MM/DD'), 5, 'Checkup', 5);
 
 INSERT INTO Worker (workerID, hourlyPay) VALUES (1, 15);
 INSERT INTO Worker (workerID, hourlyPay) VALUES (2, 17);
@@ -120,31 +120,33 @@ INSERT INTO Volunteer (volunteerID, hoursVolunteered) VALUES (8, 18);
 INSERT INTO Volunteer (volunteerID, hoursVolunteered) VALUES (9, 30); 
 INSERT INTO Volunteer (volunteerID, hoursVolunteered) VALUES (10, 22); 
 
-INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Announcement', 'Adoption event this weekend!', to_date('2023-10-25', 'YYYY/MM/DD'), 1);
-INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('News', 'New arrivals in the shelter', to_date('2023-10-26', 'YYYY/MM/DD'), 2);
-INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Update', 'Vet check-ups for all animals', to_date('2023-10-27', 'YYYY/MM/DD'), 3); 
-INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Event', 'Volunteer appreciation day', to_date('2023-10-28', 'YYYY/MM/DD'), 3);
-INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Adoption', 'Adopt a furry friend today', to_date('2023-10-29', 'YYYY/MM/DD'), 1);
+INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Announcement', 'Adoption event this weekend!', to_date('2023/10/25', 'YYYY/MM/DD'), 1);
+INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('News', 'New arrivals in the shelter', to_date('2023/10/26', 'YYYY/MM/DD'), 2);
+INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Update', 'Vet check-ups for all animals', to_date('2023/10/27', 'YYYY/MM/DD'), 3); 
+INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Event', 'Volunteer appreciation day', to_date('2023/10/28', 'YYYY/MM/DD'), 3);
+INSERT INTO Post (postType, description, postingDate, caretakerID) VALUES ('Adoption', 'Adopt a furry friend today', to_date('2023/10/29', 'YYYY/MM/DD'), 1);
 
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (1, 1, 2, to_date('2023-10-20', 'YYYY/MM/DD'), 'friendly cat');
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (2, 2, 2, to_date('2023-10-21', 'YYYY/MM/DD'), 'playful dog');
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (3, 3, 3, to_date('2023-10-22', 'YYYY/MM/DD'), 'loud cat');
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (4, 4, 2, to_date('2023-10-23', 'YYYY/MM/DD'), 'really soft bunny'); 
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (5, 5, 5, to_date('2023-10-24', 'YYYY/MM/DD'), 'quiet dog');
-INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (6, 6, 2, to_date('2023-10-25', 'YYYY/MM/DD'), 'interesting hamster');
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (1, 1, 2, to_date('2023/10/20', 'YYYY/MM/DD'), 'friendly cat');
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (2, 2, 2, to_date('2023/10/21', 'YYYY/MM/DD'), 'playful dog');
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (3, 3, 3, to_date('2023/10/22', 'YYYY/MM/DD'), 'loud cat');
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (4, 4, 2, to_date('2023/10/23', 'YYYY/MM/DD'), 'really soft bunny'); 
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (5, 5, 5, to_date('2023/10/24', 'YYYY/MM/DD'), 'quiet dog');
+--error
+INSERT INTO AdoptionDetails (petID, adopterID, caretakerID, adoptionDate, notes) VALUES (6, 6, 2, to_date('2023/10/25', 'YYYY/MM/DD'), 'interesting hamster');
 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (1, 1);
 INSERT INTO PetAdopter (petID, adopterID) VALUES (2, 2); 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (3, 3); 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (4, 4); 
 INSERT INTO PetAdopter (petID, adopterID) VALUES (5, 5);
+--error
 INSERT INTO PetAdopter (petID, adopterID) VALUES (6, 6);
 
-INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (6, 2, 1, to_date('2023-01-15 10:00', 'YYYY/MM/DD HH24:MI'));
-INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (7, 2, 2, to_date('2023-02-20 14:30', 'YYYY/MM/DD HH24:MI'));
-INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (8, 3, 3, to_date('2023-03-10 11:45', 'YYYY/MM/DD HH24:MI'));
-INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (9, 4, 4, to_date('2023-04-07 16:15', 'YYYY/MM/DD HH24:MI'));
-INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (10, 5, 5, to_date('2023-05-12 09:30', 'YYYY/MM/DD HH24:MI'));
+INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (6, 2, 1, to_date('2023/01/15 10:00', 'YYYY/MM/DD HH24:MI'));
+INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (7, 2, 2, to_date('2023/02/20 14:30', 'YYYY/MM/DD HH24:MI'));
+INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (8, 3, 3, to_date('2023/03/10 11:45', 'YYYY/MM/DD HH24:MI'));
+INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (9, 4, 4, to_date('2023/04/07 16:15', 'YYYY/MM/DD HH24:MI'));
+INSERT INTO Appointment (petID, caretakerID, customerID, apptDayTime) VALUES (10, 5, 5, to_date('2023/05/12 09:30', 'YYYY/MM/DD HH24:MI'));
 
 INSERT INTO Donation (customerID, caretakerID, amount) VALUES (1, 1, 100);
 INSERT INTO Donation (customerID, caretakerID, amount) VALUES (2, 2, 150);
@@ -176,11 +178,11 @@ INSERT INTO AnimalCaretakerPC (caretakerPostalCode, caretakerCity) VALUES ('3456
 INSERT INTO AnimalCaretakerPC (caretakerPostalCode, caretakerCity) VALUES ('87654', 'Lancaster');
 INSERT INTO AnimalCaretakerPC (caretakerPostalCode, caretakerCity) VALUES ('43210', 'Columbus');
 
-INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023-10-25', 'YYYY/MM/DD'), 'Announcement');
-INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023-10-26', 'YYYY/MM/DD'), 'News');
-INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023-10-27', 'YYYY/MM/DD'), 'Update'); 
-INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023-10-28', 'YYYY/MM/DD'), 'Event');
-INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023-10-29', 'YYYY/MM/DD'), 'Adoption');
+INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023/10/25', 'YYYY/MM/DD'), 'Announcement');
+INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023/10/26', 'YYYY/MM/DD'), 'News');
+INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023/10/27', 'YYYY/MM/DD'), 'Update'); 
+INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023/10/28', 'YYYY/MM/DD'), 'Event');
+INSERT INTO PostDateAndType (postingDate, postType) VALUES (to_date('2023/10/29', 'YYYY/MM/DD'), 'Adoption');
 
 INSERT INTO AdopterPC (adopterPostalCode, adopterCity) VALUES ('12345', 'Narnia');
 INSERT INTO AdopterPC (adopterPostalCode, adopterCity) VALUES ('23456', 'Atlantis'); 
@@ -193,5 +195,3 @@ INSERT INTO ItemPrice (itemID, total) VALUES (2, 100);
 INSERT INTO ItemPrice (itemID, total) VALUES (1, 150);
 INSERT INTO ItemPrice (itemID, total) VALUES (4, 75);
 INSERT INTO ItemPrice (itemID, total) VALUES (3, 90);
-
-commit;

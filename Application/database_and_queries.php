@@ -640,12 +640,12 @@
     function handleResetRequest() {
         global $db_conn;
 	
-	if (!file_exists($scriptPath)) {
+	if (!file_exists('script.sql')) {
 		echo "Error: File not found - script.sql";
 		return;
 	}
 	
-        $sqlScript = file_get_contents("script.sql");
+        $sqlScript = file_get_contents('script.sql');
         $sqlStatements = explode(';', $sqlScript);
 	foreach ($sqlStatements as $sqlStatement) {
 		$sqlStatement = trim($sqlStatement);
