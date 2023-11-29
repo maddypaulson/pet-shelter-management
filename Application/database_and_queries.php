@@ -605,21 +605,23 @@
     function handleDivisionRequest() {
         global $db_conn;
     
-        $query = "SELECT DISTINCT a.adopterID
-        FROM Adopter a
-        WHERE NOT EXISTS ( 
-            SELECT t.type
-            FROM Animal t
-            WHERE NOT EXISTS (
-                SELECT aa.animalID
-                FROM AnimalAdoption aa
-                WHERE aa.adopterID = a.adopterID AND aa.type = t.type))";
-    
+        $query = "SELECT AC.caretakerID, AC.caretakerName
+        FROM AnimalCaretaker AC
+        WHERE NOT EXISTS (
+            SELECT DISTINCT type
+            FROM Animal A
+            WHERE type IN ('Cat', 'Dog', 'Bunny', 'Hamster')
+            AND NOT EXISTS (
+                SELECT type
+                FROM Animal AA
+                WHERE AA.favouriteCaretaker = AA.caretakerID
+                AND A2.type = A.type));
+
         $result = executePlainSQL($query);
     
         echo "<h2>Search Results</h2>";
         echo "<table>";
-        echo "<tr><th>Adopter ID</th><th>Adopter Name</th></tr>";
+        echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th></tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
