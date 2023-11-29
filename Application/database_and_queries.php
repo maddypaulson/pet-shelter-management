@@ -601,6 +601,40 @@
 
         OCICommit($db_conn);
     }
+
+    function handleNestedGroupByRequest() {
+        global $db_conn;
+
+        $min_quantity = ($_GET['nestedAvgQuantity'] !== '') ? filter_var($_GET['nestedAvgQuantity'], FILTER_VALIDATE_INT) : null;
+    
+        $query = "SELECT c.customerID, c.customerName
+        FROM Customer c
+        WHERE c.customerID IN (
+            SELECT ip.customerID
+            FROM ItemPurchase ip
+            JOIN Item i ON ip.itemID = i.itemID
+            GROUP BY ip.customerID
+            HAVING AVG(i.quantity) > $min_quantity)";
+
+    
+        $result = executePlainSQL($query);
+    
+        echo "<h2>Search Results</h2>";
+        echo "<table>";
+        echo "<tr><th>Customer ID</th><th>Customer Name</th></tr>";
+    
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            foreach($row as $element) {
+                echo "<td>" . $element . "</td>";
+            }
+            echo "</tr>";
+        }
+    
+        echo "</table>";
+    
+        OCICommit($db_conn);
+    }
     
     function handleDivisionRequest() {
         global $db_conn;
@@ -672,7 +706,7 @@
                 handleAnimalUpdateRequest();
             } else if (array_key_exists('resetTablesRequest', $_POST)) {
 	        handleResetRequest();
-	    } else if (array_key_exists('projectionSubmit', $_POST)) {
+	        } else if (array_key_exists('projectionSubmit', $_POST)) {
                 handleProjectionRequest();
             } 
             disconnectFromDB();
@@ -691,6 +725,8 @@
                 handleGroupByRequest();
             } else if (array_key_exists('havingSubmit', $_GET)) {
                 handleAggregationHavingRequest();
+            } else if (array_key_exists('nestedSubmit', $_GET)) {
+                handleNestedGroupByRequest();
             } else if (array_key_exists('divisionSubmit', $_GET)) {
                 handleDivisionRequest();
             } 

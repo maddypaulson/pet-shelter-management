@@ -21,6 +21,13 @@
             <input type="submit" name="havingSubmit">
         </form>
 
+        <h2 id="nested">Nested Aggregation with GROUP BY: Average Number of Items purchased per Customer with a Minimum Quantity specified by the User</h2>
+        <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
+            <input type="hidden" id="nestedQueryRequest" name="nestedQueryRequest">
+            Minimum Quantity: <input type="text" name="nestedAvgQuantity"> <br /><br />
+            <input type="submit" name="nestedSubmit">
+        </form>
+
         <h2 id="division">DIVISION: Caretakers Facilitating Adoption of Every Animal Type</h2>
         <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="divisionQueryRequest" name="divisionQueryRequest">
