@@ -615,7 +615,7 @@
                 SELECT type
                 FROM Animal AA
                 WHERE AA.favouriteCaretaker = AA.caretakerID
-                AND A2.type = A.type));
+                AND A2.type = A.type))";
 
         $result = executePlainSQL($query);
     
