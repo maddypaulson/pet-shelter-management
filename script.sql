@@ -102,11 +102,11 @@ INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, ar
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Cloudy', 'Bunny', 3, 2, NULL, to_date('2023/11/11', 'YYYY/MM/DD'), NULL);
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Smoothie', 'Bunny', 3, 2, NULL, to_date('2023/10/31', 'YYYY/MM/DD'), NULL);
 
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/20', 'YYYY/MM/DD'), 1, 'Checkup', 1);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/21', 'YYYY/MM/DD'), 2, 'Vaccination', 2);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/22', 'YYYY/MM/DD'), 3, 'Dental cleaning', 3);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/23', 'YYYY/MM/DD'), 4, 'Spaying', 4);
-INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/24', 'YYYY/MM/DD'), 5, 'Checkup', 5);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/20 14:00', 'YYYY/MM/DD HH24:MI'), 1, 'Checkup', 1);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/21 11:00', 'YYYY/MM/DD HH24:MI'), 2, 'Vaccination', 2);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/22 09:00', 'YYYY/MM/DD HH24:MI'), 3, 'Dental cleaning', 3);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/23 17:00', 'YYYY/MM/DD HH24:MI'), 4, 'Spaying', 4);
+INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/24 14:00', 'YYYY/MM/DD HH24:MI'), 5, 'Checkup', 5);
 
 INSERT INTO Worker (workerID, hourlyPay) VALUES (1, 15);
 INSERT INTO Worker (workerID, hourlyPay) VALUES (2, 17);
