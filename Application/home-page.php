@@ -11,6 +11,18 @@
 
 <body>
     <h1>Animal Shelter Home</h1>
+
+<div>
+<h3 style="text-align:center"> If this is your first time running this application, please hit Reset!</h3>
+<form method="POST" action="home-page.php">
+	<button class="reset-btn">	
+	<input type="hidden" id="resetTablesRequest" name="ResetTablesRequest">
+	 Reset 
+	</button>
+</form>
+
+</div>
+
     <div class="square-container">
         <div class="card">
             <div class="circle-icon-container">
@@ -71,4 +83,16 @@
         </div>
     </div>
 </body>
+
+<!-- call GET or POST function -->
+<?php
+	include 'database_and_queries.php';
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		handlePOSTRequest();
+	}
+	else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+		handleGETRequest();
+	}
+?>
+
 </html>

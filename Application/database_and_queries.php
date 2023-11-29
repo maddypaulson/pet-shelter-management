@@ -97,7 +97,7 @@
 
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_ubovict", "a77903797", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_robinmth", "a80425994", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -586,7 +586,7 @@
     
     function handleDivisionRequest() {
         global $db_conn;
-    
+  
         $query = "SELECT DISTINCT a.adopterID, a.adopterName
         FROM Adopter a
         WHERE NOT EXISTS ( 
@@ -614,8 +614,27 @@
     
         OCICommit($db_conn);
     }
-    
-    
+
+    function handleResetRequest() {
+        global $db_conn;
+	
+	if (!file_exists($scriptPath)) {
+		echo "Error: File not found - script.sql";
+		return;
+	}
+	
+        $sqlScript = file_get_contents("script.sql");
+        $sqlStatements = explode(';', $sqlScript);
+	foreach ($sqlStatements as $sqlStatement) {
+		$sqlStatement = trim($sqlStatement);
+		if (!empty($sqlStatement)) {
+			executePlainSQL($sqlStatement);
+		}
+	}
+	
+        OCICommit($db_conn);       
+    }  
+
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
     function handlePOSTRequest() {
@@ -626,7 +645,9 @@
                 handleAnimalDeleteRequest();
             } else if (array_key_exists('updateAnimalSubmit', $_POST)) {
                 handleAnimalUpdateRequest();
-            }
+            } else if (array_key_exists('resetTablesRequest', $_POST)) {
+	        handleResetRequest();
+	    }
             disconnectFromDB();
         }
     }

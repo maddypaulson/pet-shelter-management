@@ -43,6 +43,7 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     padding-top: 20px;
+margin-top: 25px;
 }
 
 .circle-icon-container {
@@ -203,9 +204,9 @@ td {
 }
 
 h3 {
-    color: #369447;
-    font-family: 'Judson', serif;
-    font-size: 24px;
+    color: #3162E7;
+    font-family: 'Judson', sans-serif;
+    font-size: 22px;
     margin-top: 30px;
     text-align: left;
 }
@@ -223,4 +224,18 @@ h3 {
     font-size: 16px;
     font-weight: bold; 
     margin-bottom: 40px;
+}
+
+.reset-btn {
+display: block;
+margin: auto;
+padding: 10px;
+background-color: #3162E7;
+color: #FFFFFF;
+border: none;
+border-radius: 20px;
+cursor: pointer;
+font-family: 'Judson', sans-serif;
+font-size: 22px;
+font-weight: bold;
 }
