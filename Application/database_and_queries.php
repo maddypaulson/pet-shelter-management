@@ -607,24 +607,27 @@
     
         $query = "SELECT AC.caretakerID, AC.caretakerName
         FROM AnimalCaretaker AC
-        WHERE NOT EXISTS (
-            SELECT DISTINCT type
-            FROM Animal A
-            WHERE type IN ('Cat', 'Dog', 'Bunny', 'Hamster')
-            AND NOT EXISTS (
-                SELECT type
-                FROM Animal AA
-                WHERE AA.favouriteCaretaker = AA.caretakerID
-                AND A2.type = A.type))";
+        WHERE (
+            SELECT COUNT(DISTINCT T.type)
+            FROM Animal T
+            WHERE T.petID IN (
+                SELECT AD.petID
+                FROM AdoptionDetails AD
+                WHERE AD.caretakerID = AC.caretakerID
+            )
+        ) = (SELECT COUNT(DISTINCT type) FROM Animal)";
 
 
         $result = executePlainSQL($query);
-    
+
         echo "<h2>Search Results</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th></tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            // echo "im in while";
+            // echo $row;
+
             echo "<tr>";
             foreach($row as $element) {
                 echo "<td>" . $element . "</td>";

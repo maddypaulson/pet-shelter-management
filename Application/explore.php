@@ -21,7 +21,7 @@
             <input type="submit" name="havingSubmit">
         </form>
 
-        <h2 id="division">DIVISION: Find adopters who adopted all types of animals</h2>
+        <h2 id="division">DIVISION: Caretakers Facilitating Adoption of Every Animal Type</h2>
         <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="divisionQueryRequest" name="divisionQueryRequest">
             <input type="submit" name="divisionSubmit">
