@@ -214,7 +214,7 @@
         }
 
         $tuple = array (
-            ":bind1" => $_POST['delPetID']
+            ":bind1" => $petID
         );
         
         $alltuples = array (
@@ -254,13 +254,18 @@
             echo "Error: Pet with ID $petID not found.";
             return;
         }
+        
+        $query = "UPDATE Animal SET ";
+
+        $tuple = array();
 
         if ($care !== null) {
             if (!checkForeignKey($care, "caretakerID", "AnimalCaretaker")) {
                 echo "Error: Invalid caretaker ID";
                 return;
             }
-            executePlainSQL("UPDATE Animal SET favouriteCaretaker='" . $care . "' WHERE petID='" . $petID . "'");
+            $query .= "favouriteCaretaker = :care, ";
+            $tuple[':care'] = $care;
         }
 
         if ($adopter !== null) {
@@ -268,13 +273,26 @@
                 echo "Error: Invalid adopter ID";
                 return;
             }
-            executePlainSQL("UPDATE Animal SET adopterID='" . $adopter . "' WHERE petID='" . $petID . "'");
+            $query .= "adopterID = :adopter, ";
+            $tuple[':adopter'] = $adopter;
         }
 
-        if($age !== null){
-            executePlainSQL("UPDATE Animal SET age='" . $age . "' WHERE petID='" . $petID . "'");
+        if ($age !== null) {
+            $query .= "age = :age, ";
+            $tuple[':age'] = $age;
         }
-        
+
+        $query = rtrim($query, ', ');
+
+        $query .= " WHERE petID = :petID";
+        $tuple[':petID'] = $petID;
+
+        $alltuples = array (
+            $tuple
+        );
+
+        executeBoundSQL($query, $alltuples);
+
         OCICommit($db_conn);
     }
     
