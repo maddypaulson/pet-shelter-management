@@ -653,16 +653,26 @@
 
         $min_quantity = ($_GET['nestedAvgQuantity'] !== '') ? filter_var($_GET['nestedAvgQuantity'], FILTER_VALIDATE_INT) : null;
     
-        $query = "SELECT c.customerID, c.customerName
+        /*$query = "SELECT c.customerID, c.customerName
         FROM Customer c
         WHERE c.customerID IN (
             SELECT ip.customerID
             FROM ItemPurchase ip
             JOIN Item i ON ip.itemID = i.itemID
             GROUP BY ip.customerID
-            HAVING AVG(i.quantity) > :bind1)";
+            HAVING AVG(i.quantity) > :bind1)";*/
 
-    
+        $query = "SELECT c.customerID, c.customerName, subquery.avgQuantity
+        FROM Customer c
+        JOIN (
+            SELECT ip.customerID, AVG(i.quantity) as avgQuantity
+            FROM ItemPurchase ip
+            JOIN Item i ON ip.itemID = i.itemID
+            GROUP BY ip.customerID
+            HAVING AVG(i.quantity) > :bind1
+        ) subquery ON c.customerID = subquery.customerID";
+
+
         $bindings = array(':bind1' => $min_quantity);
 
         // $result = executePlainSQL($query);
@@ -670,7 +680,7 @@
     
         echo "<h2>Search Results</h2>";
         echo "<table>";
-        echo "<tr><th>Customer ID</th><th>Customer Name</th></tr>";
+        echo "<tr><th>Customer ID</th><th>Customer Name</th><th> Average Number of Items purchased per Customer</tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
