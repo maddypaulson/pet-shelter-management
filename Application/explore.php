@@ -21,7 +21,7 @@
             <input type="submit" name="havingSubmit">
         </form>
 
-        <h2 id="nested">Nested Aggregation with GROUP BY: Average Number of Items purchased per Customer with quantity equal or above the average number of purchases of all Customers</h2>
+        <h2 id="nested">Nested Aggregation with GROUP BY: Lists customers that have purchased same or more number of items than the average customers</h2>
         <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="nestedQueryRequest" name="nestedQueryRequest">
             <!--Minimum Quantity: <input type="text" name="nestedAvgQuantity"> <br /><br />-->
