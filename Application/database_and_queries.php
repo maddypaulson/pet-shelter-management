@@ -653,32 +653,17 @@
     function handleNestedGroupByRequest() {
         global $db_conn;
 
-        $min_quantity = ($_GET['nestedAvgQuantity'] !== '') ? filter_var($_GET['nestedAvgQuantity'], FILTER_VALIDATE_INT) : null;
-    
-        /*$query = "SELECT c.customerID, c.customerName
-        FROM Customer c
-        WHERE c.customerID IN (
-            SELECT ip.customerID
-            FROM ItemPurchase ip
-            JOIN Item i ON ip.itemID = i.itemID
-            GROUP BY ip.customerID
-            HAVING AVG(i.quantity) > :bind1)";*/
-
-        $query = "SELECT c.customerID, c.customerName, subquery.avgQuantity
-        FROM Customer c
-        JOIN (
-            SELECT ip.customerID, AVG(i.quantity) as avgQuantity
-            FROM ItemPurchase ip
-            JOIN Item i ON ip.itemID = i.itemID
-            GROUP BY ip.customerID
-            HAVING AVG(i.quantity) > :bind1
-        ) subquery ON c.customerID = subquery.customerID";
+        $query = "SELECT C.customerID, C.customerName, COUNT(*) AS purchaseCount
+        FROM Customer C
+        JOIN ItemPurchase I ON C.customerID = I.customerID
+        GROUP BY C.customerID, C.customerName
+        HAVING COUNT(*) >= (SELECT AVG(purchaseCount2)
+                           FROM (SELECT customerID, COUNT(*) AS purchaseCount2
+                                 FROM ItemPurchase
+                                 GROUP BY customerID))";
 
 
-        $bindings = array(':bind1' => $min_quantity);
-
-        // $result = executePlainSQL($query);
-        $result = executePlainSQL($query, $bindings);
+        $result = executePlainSQL($query);
     
         echo "<h2>Search Results</h2>";
         echo "<table>";
@@ -696,6 +681,7 @@
     
         OCICommit($db_conn);
     }
+
     
     function handleDivisionRequest() {
         global $db_conn;
