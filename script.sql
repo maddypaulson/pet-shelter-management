@@ -163,6 +163,10 @@ INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (2, 1, 5);
 INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (3, 3, 1); 
 INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (4, 5, 4); 
 INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (5, 3, 5);
+INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (2, 3, 5);
+INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (3, 2, 2);
+INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (4, 1, 4);
+INSERT INTO ItemPurchase (customerID, caretakerID, itemID) VALUES (1, 3, 5);
 
 INSERT INTO Vet (vetName) VALUES ('Dr. Allan');
 INSERT INTO Vet (vetName) VALUES ('Dr. Papper');
