@@ -148,19 +148,19 @@
         } else if ($type === false) {
             echo "Error: Invalid animal type";
             return;
-        } elseif ($age === false || $age <= 0) {
+        } elseif ($age === false) {
             echo "Error: Invalid age";
             return;
-        } elseif ($care === false || $care <= 0) {
+        } elseif ($care === false) {
             echo "Error: Invalid caretaker ID";
             return;
-        } elseif ($prev_owner === false || $prev_owner <= 0) {
+        } elseif ($prev_owner === false) {
             echo "Error: Invalid previous owner";
             return;
         } elseif ($arrivalYear === false || $arrivalMonth === false || $arrivalDay === false) {
             echo "Error: Invalid arrival date";
             return;
-        } elseif ($adopter === false || $adopter <= 0) {
+        } elseif ($adopter === false) {
             echo "Error: Invalid adopter ID";
             return;
         }
@@ -250,13 +250,13 @@
         if ($petID === false){
             echo "Error: Invalid input for Pet ID.";
             return;
-        } else if ($age === false || $age < 0) {
+        } else if ($age === false) {
             echo "Error: Invalid input for age.";
             return;
-        } else if ($care === false || $care < 0) {
+        } else if ($care === false) {
             echo "Error: Invalid input for age.";
             return;
-        } else if ($adopter === false || $adopter < 0) {
+        } else if ($adopter === false) {
             echo "Error: Invalid input for age.";
             return;
         }
