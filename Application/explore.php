@@ -1,5 +1,4 @@
-<!--Used the starter code oracle test as a base for this gui -->
-
+// file based off of oracle-test.php from CS304
 <html>
     <head>
         <title>CPSC 304 PHP/Oracle Demonstration</title>
