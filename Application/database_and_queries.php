@@ -106,7 +106,7 @@
 
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_maddy02", "a36440824", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_ubovict", "a77903797", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -575,8 +575,8 @@
 
         $animal_type = ($_GET['animalType'] !== '') ? "'" . filter_var($_GET['animalType'], FILTER_SANITIZE_STRING) . "'" : null;
 
-        if ($type === false) {
-            echo "Error: Invalid animal type";
+        if ($animal_type === false) {
+            echo "Error: Animal type must be a string value";
             return;
         }
     
@@ -586,8 +586,10 @@
                 GROUP BY type"; 
 
         // echo $query;
+        // $bindings = array(':bind1' => $animal_type);
 
         $result = executePlainSQL($query);
+        // $result = executePlainSQL($query, $bindings);
 
         echo "<h2> Search Results</h2>";
         echo "<table>";
@@ -595,10 +597,7 @@
 
         while($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             foreach($row as $element) {
-                // echo "<tr>";
                 echo "<td>" . $element . "</td>";
-                // echo "<td>" . $element['TYPECOUNT'] . "</td>";
-                // echo "</tr>";
             }
         }
 
@@ -620,9 +619,12 @@
         $query = "SELECT FundraiserEvent.eventType, AVG(FundraiserEvent.donationGoal) AS avgDonationGoal 
         FROM FundraiserEvent
         GROUP BY eventType
-        HAVING AVG(FundraiserEvent.donationGoal) >= $donation";
+        HAVING AVG(FundraiserEvent.donationGoal) >= :bind1";
 
-        $result = executePlainSQL($query);
+        $bindings = array(':bind1' => $donation);
+
+        // $result = executePlainSQL($query);
+        $result = executePlainSQL($query, $bindings);
     
         echo "<h2>Search Results</h2>";
         echo "<table>";
@@ -658,10 +660,13 @@
             FROM ItemPurchase ip
             JOIN Item i ON ip.itemID = i.itemID
             GROUP BY ip.customerID
-            HAVING AVG(i.quantity) > $min_quantity)";
+            HAVING AVG(i.quantity) > :bind1)";
 
     
-        $result = executePlainSQL($query);
+        $bindings = array(':bind1' => $min_quantity);
+
+        // $result = executePlainSQL($query);
+        $result = executePlainSQL($query, $bindings);
     
         echo "<h2>Search Results</h2>";
         echo "<table>";

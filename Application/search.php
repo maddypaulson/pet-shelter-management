@@ -28,6 +28,8 @@
             <input type="submit" name="projectionSubmit" value="submit">
         </form>
         <h2 id="groupBy">Aggregation with GROUP BY: Count how many animals of specific type we have in pet shelter</h2>
+        <p>The values are case sensitive and if you enter in the wrong case, the group by query will not be correctly executed.</p>
+        <p>Reminder: Animal type first letter should be capitalized.</p>
         <form method="GET" action="search.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="groupByQueryRequest" name="groupByQueryRequest">
             Type of animal: <input type="text" name="animalType"> <br /><br />
