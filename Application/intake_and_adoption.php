@@ -25,12 +25,8 @@
             <select name="insAnimalType">
                 <option value="dog">Dog</option>
                 <option value="cat">Cat</option>
-                <option value="fish">Fish</option>
                 <option value="hamster">Hamster</option>
-                <option value="bird">Bird</option>
                 <option value="bunny">Bunny</option>
-                <option value="snake">Snake</option>
-                <option value="lizard">Lizard</option>
             </select>
             </div>
             </div>
@@ -44,7 +40,7 @@
                 <select name="arrivalYear">
                     <?php
                     // Generate year options
-                    for ($year = 2000; $year <= 2050; $year++) {
+                    for ($year = 2000; $year <= 2023; $year++) {
                         echo "<option value=\"$year\">$year</option>";
                     }
                     ?>

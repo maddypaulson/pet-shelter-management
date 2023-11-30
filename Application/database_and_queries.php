@@ -13,7 +13,7 @@
         }
     }
 
-    function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+    function executePlainSQL($cmdstr, $bindings = null) { //takes a plain (no bound variables) SQL command and executes it
         //echo "<br>running ".$cmdstr."<br>";
         global $db_conn, $success;
 
@@ -27,6 +27,12 @@
             $success = False;
         }
 
+        if ($bindings) {
+            foreach ($bindings as $bind => $val) {
+                OCIBindByName($statement, $bind, $val);
+            }
+        }
+        
         $r = OCIExecute($statement, OCI_DEFAULT);
         if (!$r) {
             echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
@@ -53,6 +59,8 @@
             echo htmlentities($e['message']);
             $success = False;
         }
+
+        $result = array();
     
         foreach ($list as $tuple) {
             foreach ($tuple as $bind => $val) {
@@ -76,6 +84,7 @@
         if ($success) {
             echo "<h3>Operation successful<h3>";
         }
+
     }
 
     function printResult($result) { //prints results from a select statement
@@ -97,7 +106,7 @@
 
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_robinmth", "a80425994", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_maddy02", "a36440824", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -126,7 +135,7 @@
         $name = filter_var($_POST['insAnimalName'], FILTER_SANITIZE_STRING);
         $type = filter_var($_POST['insAnimalType'], FILTER_SANITIZE_STRING);
         $age = ($_POST['insAge'] !== '') ? filter_var($_POST['insAge'], FILTER_VALIDATE_INT) : null;
-        $care = ($_POST['insFavCare'] !== '') ? filter_var($_POST['insFavCare'], FILTER_SANITIZE_STRING) : null;
+        $care = ($_POST['insFavCare'] !== '') ? filter_var($_POST['insFavCare'], FILTER_VALIDATE_INT) : null;
         $prev_owner = ($_POST['insPrevOwner'] !== '') ? filter_var($_POST['insPrevOwner'], FILTER_VALIDATE_INT) : null;
         $arrivalYear = filter_var($_POST['arrivalYear'], FILTER_VALIDATE_INT);
         $arrivalMonth = filter_var($_POST['arrivalMonth'], FILTER_VALIDATE_INT);
@@ -136,19 +145,22 @@
         if ($name === false) {
             echo "Error: Invalid name";
             return;
+        } else if ($type === false) {
+            echo "Error: Invalid animal type";
+            return;
         } elseif ($age === false || $age <= 0) {
             echo "Error: Invalid age";
             return;
-        } elseif ($care === false) {
+        } elseif ($care === false || $care <= 0) {
             echo "Error: Invalid caretaker ID";
             return;
-        } elseif ($prev_owner === false) {
+        } elseif ($prev_owner === false || $prev_owner <= 0) {
             echo "Error: Invalid previous owner";
             return;
         } elseif ($arrivalYear === false || $arrivalMonth === false || $arrivalDay === false) {
             echo "Error: Invalid arrival date";
             return;
-        } elseif ($adopter === false) {
+        } elseif ($adopter === false || $adopter <= 0) {
             echo "Error: Invalid adopter ID";
             return;
         }
@@ -241,10 +253,10 @@
         } else if ($age === false || $age < 0) {
             echo "Error: Invalid input for age.";
             return;
-        } else if ($care === false) {
+        } else if ($care === false || $care < 0) {
             echo "Error: Invalid input for age.";
             return;
-        } else if ($adopter === false) {
+        } else if ($adopter === false || $adopter < 0) {
             echo "Error: Invalid input for age.";
             return;
         }
@@ -378,27 +390,27 @@
         if ($careID === false) {
             echo "Error: Invalid caretaker ID";
             return;
-        } elseif ($careName === false) {
+        } elseif ($careName === false || containsSqlKeywords($careName)) {
             echo "Error: Invalid caretaker name";
             return;
         } elseif ($fundraiserID === false) {
             echo "Error: Invalid fundraiser ID";
             return;
-        } elseif ($address === false) {
+        } elseif ($address === false || containsSqlKeywords($address)) {
             echo "Error: Invalid address";
             return;
-        } elseif ($postalCode === false) {
+        } elseif ($postalCode === false || containsSqlKeywords($postalCode)) {
             echo "Error: Invalid postal code";
             return;
         }
-    
+        
         $query = "SELECT * FROM AnimalCaretaker WHERE ";
     
         $conditions = array();
         if ($careID !== null) {
             $conditions[] = "caretakerID = $careID";
         }
-        if ($careName !== null) {
+        if ($careName !== null ) {
             $conditions[] = "caretakerName = $careName";
         }
         if ($fundraiserID !== null) {
@@ -433,7 +445,19 @@
         echo "</table>";
 
         OCICommit($db_conn);
-    }    
+    }
+    
+    function containsSqlKeywords($input) {
+        $sqlKeywords = array('SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'ALTER', 'CREATE', 'TRUNCATE');
+    
+        foreach ($sqlKeywords as $keyword) {
+            if (stripos($input, $keyword) !== false) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
 
     function handleJoinRequest(){
         global $db_conn;
@@ -447,9 +471,11 @@
     
         $query = "SELECT Customer.customerName, Donation.amount FROM Customer
         JOIN Donation ON Customer.customerID = Donation.customerID
-        WHERE Donation.amount > $donation";
+        WHERE Donation.amount > :bind1";
+
+        $bindings = array(':bind1' => $donation);
     
-        $result = executePlainSQL($query);
+        $result = executePlainSQL($query, $bindings);
 
         /* Display the result of the query as a formatted table */
         echo "<h1>Search Results</h1>";
