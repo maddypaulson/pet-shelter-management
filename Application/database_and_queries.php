@@ -481,7 +481,7 @@
 
         /* Display the result of the query as a formatted table */
         echo "<h1>Search Results</h1>";
-        echo "<h2>Customers with Donations above $donation</h2>";
+        echo "<h2>Customers with donation above $$donation</h2>";
         echo "<table border='1'>";
         echo "<tr><th>Customer Name</th><th>Donation Amount</th></tr>";
     
@@ -688,15 +688,7 @@
     
         $query = "SELECT AC.caretakerID, AC.caretakerName
         FROM AnimalCaretaker AC
-        WHERE (
-            SELECT COUNT(DISTINCT T.type)
-            FROM Animal T
-            WHERE T.petID IN (
-                SELECT AD.petID
-                FROM AdoptionDetails AD
-                WHERE AD.caretakerID = AC.caretakerID
-            )
-        ) = (SELECT COUNT(DISTINCT type) FROM Animal)";
+        WHERE NOT EXISTS (SELECT DISTINCT A.type FROM Animal A MINUS SELECT DISTINCT A.type FROM Animal A, AdoptionDetails AD WHERE AD.caretakerID = AC.caretakerID AND AD.petID = A.petID";
 
 
         $result = executePlainSQL($query);
