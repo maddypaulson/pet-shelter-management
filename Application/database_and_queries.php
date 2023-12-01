@@ -751,7 +751,40 @@
 	}
 	
         OCICommit($db_conn);       
-    }  
+    }
+    
+    function handleVerificationRequest(){
+        global $db_conn;
+
+        $result = executePlainSQL("SELECT * FROM Animal");
+
+        if($result === false){
+            echo "Can't execute query";
+        }
+
+        /* Display the result of the query as a formatted table */
+        echo "<h2>Animal Table</h2>";
+        echo "<table>";
+        echo "<tr><th>Pet ID</th><th>Animal Name</th><th>Animal Type</th><th>Animal Age</th><th>Favourite Caretaker ID</th><th>Previous Owner</th><th>Arrival Date</th><th>Adopter ID</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . $row['PETID'] . "</td>";
+            echo "<td>" . $row['ANIMALNAME'] . "</td>";
+            echo "<td>" . $row['TYPE'] . "</td>";
+            echo "<td>" . $row['AGE'] . "</td>";
+            echo "<td>" . $row['FAVOURITECARETAKER'] . "</td>";
+            echo "<td>" . $row['PREVIOUSOWNER'] . "</td>";
+            echo "<td>" . $row['ARRIVALDATE'] . "</td>";
+            echo "<td>" . $row['ADOPTERID'] . "</td>";
+            
+            echo "</tr>";
+        }
+
+        echo "</table>";
+
+        OCICommit($db_conn);
+    }
 
     // HANDLE ALL POST ROUTES
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
@@ -767,7 +800,9 @@
 	        handleResetRequest();
 	        } else if (array_key_exists('projectionSubmit', $_POST)) {
                 handleProjectionRequest();
-            } 
+            } else if (array_key_exists('verifyAnimalTable', $_POST)) {
+                handleVerificationRequest();
+            }
             disconnectFromDB();
         }
     }

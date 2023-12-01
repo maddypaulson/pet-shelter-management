@@ -14,6 +14,11 @@
         <a href="home-page.php">
             <button class="return-home">Return to Home Page</button>
         </a>
+        <form method="POST" action="intake_and_adoption.php">
+            <button class="view-animal-table" type="submit" name="verifyAnimalTable">
+                Check the Animal Table
+            </button>
+        </form>
         <h2 id="add">Add an animal to the system</h2>
         <form method="POST" action="intake_and_adoption.php"> <!--refresh page when submitted-->
             <input type="hidden" id="insertAnimalQueryRequest" name="insertAnimalQueryRequest">

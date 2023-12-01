@@ -185,7 +185,7 @@ form input[type="submit"] {
 
 table {
     border-collapse: collapse;
-    width: 30%;
+    width: 60%;
     margin: 20px auto;
 }
 
@@ -204,7 +204,7 @@ td {
 }
 
 h3 {
-    color: #3162E7;
+    color: #AC7B84;
     font-family: 'Judson', sans-serif;
     font-size: 22px;
     margin-top: 30px;
@@ -215,7 +215,7 @@ h3 {
     display: block;
     margin: 0 auto;
     padding: 10px;
-    background-color: #4c243bc8;
+    background-color: #AC7B84;
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -230,7 +230,7 @@ h3 {
 display: block;
 margin: auto;
 padding: 10px;
-background-color: #3162E7;
+background-color: #AC7B84;
 color: #FFFFFF;
 border: none;
 border-radius: 20px;
@@ -238,4 +238,27 @@ cursor: pointer;
 font-family: 'Judson', sans-serif;
 font-size: 22px;
 font-weight: bold;
+}
+
+h4 {
+    color: #7d0e0e;
+    font-family: 'Judson', sans-serif;
+    font-size: 22px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.view-animal-table {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #AC7B84;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Judson', serif;
+    font-size: 16px;
+    font-weight: bold; 
+    margin-bottom: 40px;
 }
