@@ -688,15 +688,7 @@
     
         $query = "SELECT AC.caretakerID, AC.caretakerName
         FROM AnimalCaretaker AC
-        WHERE (
-            SELECT COUNT(DISTINCT T.type)
-            FROM Animal T
-            WHERE T.petID IN (
-                SELECT AD.petID
-                FROM AdoptionDetails AD
-                WHERE AD.caretakerID = AC.caretakerID
-            )
-        ) = (SELECT COUNT(DISTINCT type) FROM Animal)";
+        WHERE NOT EXISTS (SELECT DISTINCT A.type FROM Animal A MINUS SELECT DISTINCT A.type FROM Animal A, AdoptionDetails AD WHERE AD.caretakerID = AC.caretakerID AND AD.petID = A.petID";
 
 
         $result = executePlainSQL($query);
