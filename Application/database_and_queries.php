@@ -107,7 +107,7 @@
 
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_ubovict", "a77903797", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_robinmth", "a80425994", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -613,7 +613,7 @@
     
         echo "<h2>Search Results</h2>";
         echo "<table>";
-        echo "<tr><th>Event Type</th><th>Average Donation Amount</th></tr>";
+        echo "<tr><th>Event Type</th><th>Donation Goal</th></tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
@@ -644,7 +644,7 @@
     
         echo "<h2>Search Results</h2>";
         echo "<table>";
-        echo "<tr><th>Customer ID</th><th>Customer Name</th><th> Average Number of Items purchased per Customer</tr>";
+        echo "<tr><th>Customer ID</th><th>Customer Name</th><th>Number of items purchased</tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
             echo "<tr>";
@@ -665,7 +665,7 @@
     
         $query = "SELECT AC.caretakerID, AC.caretakerName
         FROM AnimalCaretaker AC
-        WHERE NOT EXISTS (SELECT DISTINCT A.type FROM Animal A MINUS SELECT DISTINCT A.type FROM Animal A, AdoptionDetails AD WHERE AD.caretakerID = AC.caretakerID AND AD.petID = A.petID";
+        WHERE NOT EXISTS (SELECT DISTINCT A.type FROM Animal A MINUS SELECT DISTINCT A.type FROM Animal A, AdoptionDetails AD WHERE AD.caretakerID = AC.caretakerID AND AD.petID = A.petID)";
 
 
         $result = executePlainSQL($query);

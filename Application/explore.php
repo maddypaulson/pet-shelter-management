@@ -14,17 +14,16 @@
         <a href="home-page.php">
             <button class="return-home">Return to Home Page</button>
         </a>
-        <h2 id="having">Aggregation with HAVING: Find fundraiser event types with specified average donation goal or above</h2>
+        <h2 id="having">Aggregation with HAVING: Find fundraiser event types with specified donation goal or above</h2>
         <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="havingQueryRequest" name="havingQueryRequest">
-            Average Donation Goal Value: <input type="text" name="havingAvgDonationGoalThreshold"> <br /><br />
+            Donation Goal: <input type="text" name="havingAvgDonationGoalThreshold"> <br /><br />
             <input type="submit" name="havingSubmit">
         </form>
 
         <h2 id="nested">Nested Aggregation with GROUP BY: Find all customers who have purchased equal to or greater than the average number of items</h2>
         <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="nestedQueryRequest" name="nestedQueryRequest">
-            Minimum Quantity: <input type="text" name="nestedAvgQuantity"> <br /><br />
             <input type="submit" name="nestedSubmit">
         </form>
 
