@@ -502,13 +502,8 @@
     
         // getting info which attribute checkboxes were selected when the query request is submitted
         $selectedAttributes = isset($_POST['projectionAttributes']) ? $_POST['projectionAttributes'] : array();
-        // if (!empty($_POST["projectionAttributes"])) {
-        //     $temp = $_POST["projectionAttributes"];
-        //     echo $temp;
-        // }
 
         $query = "SELECT ";
-        // echo $query;
 
         foreach ($selectedAttributes as $attribute) {
             if ($attribute == "petID") {
@@ -535,15 +530,9 @@
             if ($attribute == "adopterID") {
                 $query .= "adopterID, "; 
             }
-            
-            // echo htmlspecialchars($attribute) . "<br>";
         }
-        // echo $query;
 
         $query = rtrim($query, ", ") . " FROM Animal";
-        
-        // echo $query;
-
         $result = executePlainSQL($query);
 
         echo "<h2>Search Results</h2>";
@@ -558,7 +547,6 @@
         echo "</tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
-            // echo $row;
             echo "<tr>";
             foreach ($row as $element) {
                 echo "<td>" . $element . "</td>";
@@ -587,11 +575,7 @@
                 WHERE type = $animal_type
                 GROUP BY type"; 
 
-        // echo $query;
-        // $bindings = array(':bind1' => $animal_type);
-
         $result = executePlainSQL($query);
-        // $result = executePlainSQL($query, $bindings);
 
         echo "<h2> Search Results</h2>";
         echo "<table>";
@@ -625,7 +609,6 @@
 
         $bindings = array(':bind1' => $donation);
 
-        // $result = executePlainSQL($query);
         $result = executePlainSQL($query, $bindings);
     
         echo "<h2>Search Results</h2>";
@@ -638,12 +621,6 @@
                 echo "<td>" . $element . "</td>";
             }
             echo "</tr>";
-
-            /*echo "<tr>";
-            echo "<td>" . $row['EVENTTYPE'] . "</td>";
-            echo "<td>" . $row['AVGDONATIONGOAL'] . "</td>";
-            echo "</tr>";*/
-
         }
         echo "</table>";
 
@@ -698,9 +675,6 @@
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th></tr>";
     
         while ($row = OCI_Fetch_Array($result, OCI_ASSOC)) {
-            // echo "im in while";
-            // echo $row;
-
             echo "<tr>";
             foreach($row as $element) {
                 echo "<td>" . $element . "</td>";
