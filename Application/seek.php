@@ -1,4 +1,4 @@
-// file based off of oracle-test.php from CS304
+<!--CITATION: This code was adapted from the starter code file oracle-test.php -->
 
 <html>
     <head>

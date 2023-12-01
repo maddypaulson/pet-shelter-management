@@ -1,4 +1,5 @@
-// file based off of oracle-test.php from CS304
+<!--CITATION: This code was adapted from the starter code file oracle-test.php -->
+
 <html>
     <head>
         <title>CPSC 304 PHP/Oracle Demonstration</title>
@@ -20,10 +21,10 @@
             <input type="submit" name="havingSubmit">
         </form>
 
-        <h2 id="nested">Nested Aggregation with GROUP BY: Lists customers that have purchased same or more number of items than the average customers</h2>
+        <h2 id="nested">Nested Aggregation with GROUP BY: Average Number of Items purchased per Customer with quantity equal or above</h2>
         <form method="GET" action="explore.php"> <!-- refresh page when submitted -->
             <input type="hidden" id="nestedQueryRequest" name="nestedQueryRequest">
-            <!--Minimum Quantity: <input type="text" name="nestedAvgQuantity"> <br /><br />-->
+            Minimum Quantity: <input type="text" name="nestedAvgQuantity"> <br /><br />
             <input type="submit" name="nestedSubmit">
         </form>
 

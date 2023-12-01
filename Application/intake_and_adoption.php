@@ -1,4 +1,4 @@
-// file based off of oracle-test.php
+<!--CITATION: This code was adapted from the starter code file oracle-test.php -->
 
 <html>
     <head>

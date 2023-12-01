@@ -1,5 +1,4 @@
-// file based off of oracle-test.php from CS3O4
-
+<!--CITATION: This code was adapted from the starter code file oracle-test.php -->
 <?php
     /* DATABASE MANAGEMENT FUNCTIONS */
     
