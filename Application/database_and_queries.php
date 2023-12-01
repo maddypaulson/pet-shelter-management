@@ -577,7 +577,7 @@
 
         $animal_type = ($_GET['animalType'] !== '') ? "'" . filter_var($_GET['animalType'], FILTER_SANITIZE_STRING) . "'" : null;
 
-        if ($animal_type === false) {
+        if ($animal_type === false || containsSqlKeywords($animal_type)) {
             echo "Error: Animal type must be a string value";
             return;
         }
