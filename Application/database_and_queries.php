@@ -429,7 +429,8 @@
         $result = executePlainSQL($query);
 
         /* Display the result of the query as a formatted table */
-        echo "<h2>Search Results</h2>";
+ 	echo "<h1>Search Results</h1>";
+        echo "<h2>Caretakers from search</h2>";
         echo "<table>";
         echo "<tr><th>Caretaker ID</th><th>Caretaker Name</th><th>Fundraiser ID</th><th>Address</th><th>Postal Code</th></tr>";
 
@@ -480,7 +481,7 @@
 
         /* Display the result of the query as a formatted table */
         echo "<h1>Search Results</h1>";
-        echo "<h2>Customers with Donations above $donation</h2>";
+        echo "<h2>Customers with donation above $$donation</h2>";
         echo "<table border='1'>";
         echo "<tr><th>Customer Name</th><th>Donation Amount</th></tr>";
     
