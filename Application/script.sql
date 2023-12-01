@@ -29,7 +29,7 @@ CREATE TABLE Customer (customerID INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAIN
 
 CREATE TABLE Adopter (adopterID INTEGER CONSTRAINT a_pk PRIMARY KEY REFERENCES Customer(customerID) ON DELETE CASCADE, numOfAdoptions INTEGER, safeOwnerRating INTEGER, adopterPostalCode VARCHAR2(8), adopterAddress VARCHAR2(50));
 
-CREATE TABLE Animal (petID INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAINT animal_pk PRIMARY KEY, animalName VARCHAR2(50), type VARCHAR2(25), age INTEGER, favouriteCaretaker INTEGER CONSTRAINT a_fk_fc REFERENCES AnimalCaretaker(caretakerID), previousOwner INTEGER CONSTRAINT a_fk_po REFERENCES Customer(customerID), arrivalDate DATE CONSTRAINT animal_nn NOT NULL, adopterID INTEGER CONSTRAINT a_fk_aid REFERENCES Adopter(adopterID));
+CREATE TABLE Animal (petID INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAINT animal_pk PRIMARY KEY, animalName VARCHAR2(50), type VARCHAR2(25), age INTEGER, favouriteCaretaker INTEGER CONSTRAINT a_fk_fc REFERENCES AnimalCaretaker(caretakerID), previousOwner INTEGER CONSTRAINT a_fk_po NOT NULL REFERENCES Customer(customerID), arrivalDate DATE CONSTRAINT animal_nn NOT NULL, adopterID INTEGER CONSTRAINT a_fk_aid REFERENCES Adopter(adopterID));
 
 CREATE TABLE VetAppointment (vetDayTime DATE CONSTRAINT va_pk PRIMARY KEY, vetLicenseID INTEGER, reason VARCHAR2(250), petID INTEGER CONSTRAINT va_fk REFERENCES Animal(petID) ON DELETE CASCADE);
 
@@ -99,8 +99,8 @@ INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, ar
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Domino', 'Hamster', 1, 3, 1, to_date('2022/02/23', 'YYYY/MM/DD'), NULL);
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Patch', 'Dog', 2, 5, 4, to_date('2023/04/07', 'YYYY/MM/DD'), NULL);
 INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Pirate', 'Cat', 2, 4, 4, to_date('2021/05/11', 'YYYY/MM/DD'), NULL);
-INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Cloudy', 'Bunny', 3, 2, NULL, to_date('2023/11/11', 'YYYY/MM/DD'), NULL);
-INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Smoothie', 'Bunny', 3, 2, NULL, to_date('2023/10/31', 'YYYY/MM/DD'), NULL);
+INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Cloudy', 'Bunny', 3, 2, 2, to_date('2023/11/11', 'YYYY/MM/DD'), NULL);
+INSERT INTO Animal (animalName, type, age, favouriteCaretaker, previousOwner, arrivalDate, adopterID) VALUES ('Smoothie', 'Bunny', 3, 2, 2, to_date('2023/10/31', 'YYYY/MM/DD'), NULL);
 
 INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/20 14:00', 'YYYY/MM/DD HH24:MI'), 1, 'Checkup', 1);
 INSERT INTO VetAppointment (vetDayTime, vetLicenseID, reason, petID) VALUES (to_date('2023/10/21 11:00', 'YYYY/MM/DD HH24:MI'), 2, 'Vaccination', 2);
